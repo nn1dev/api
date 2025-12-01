@@ -22,11 +22,9 @@
   },
   "scripts": {
     "gen": "wrangler types",
-    "check": "tsc && wrangler deploy --dry-run",
-    "deploy": "wrangler deploy",
-    "dev": "pnpm seedLocalD1 && wrangler dev",
-    "predeploy": "wrangler d1 migrations apply DB --remote",
-    "seedLocalD1": "wrangler d1 migrations apply DB --local"
+    "dev": "pnpm seed:dev && wrangler dev",
+    "seed:prod": "wrangler d1 migrations apply DB --remote",
+    "seed:dev": "wrangler d1 migrations apply DB --local"
   },
   "dependencies": {
     "hono": "^4.10.7"
