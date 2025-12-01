@@ -17,6 +17,9 @@
     "publish": true
   },
   "devDependencies": {
+    "@react-email/preview-server": "5.0.5",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "typescript": "5.9.3",
     "wrangler": "4.51.0"
   },
@@ -24,9 +27,18 @@
     "gen": "wrangler types",
     "dev": "pnpm seed:dev && wrangler dev",
     "seed:prod": "wrangler d1 migrations apply DB --remote",
-    "seed:dev": "wrangler d1 migrations apply DB --local"
+    "seed:dev": "wrangler d1 migrations apply DB --local",
+    "emails:build": "email build",
+    "emails:dev": "email dev",
+    "emails:export": "email export"
   },
   "dependencies": {
-    "hono": "^4.10.7"
+    "@react-email/components": "^1.0.1",
+    "@react-email/render": "^2.0.0",
+    "hono": "^4.10.7",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-email": "^5.0.5",
+    "resend": "^6.5.2"
   }
 }
