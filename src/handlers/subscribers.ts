@@ -1,5 +1,7 @@
 import { Hono } from "hono";
 import { normalizeEmail } from "../utils";
+import { renderEmailAdminNewsletterSubscribe } from "../emails/renderEmailAdminNewsletterSubscribe";
+import { Resend } from "resend";
 
 const app = new Hono<{ Bindings: Cloudflare.Env }>();
 
@@ -134,6 +136,29 @@ app.put("/:subscriberId", async (c) => {
   )
     .bind(true, "", subscriberId)
     .run();
+
+  const resend = new Resend(c.env.API_KEY_RESEND);
+
+  const emailAdmin = await renderEmailAdminNewsletterSubscribe({
+    email: results[0].email,
+  });
+  const { error } = await resend.emails.send({
+    from: "NN1 Dev Club <club@nn1.dev>",
+    to: c.env.ADMIN_EMAILS.split(","),
+    subject: "✨ Newsletter - user subscribed",
+    html: emailAdmin.html,
+    text: emailAdmin.text,
+  });
+
+  if (error) {
+    return c.json(
+      {
+        status: "error",
+        data: error,
+      },
+      { status: 400 },
+    );
+  }
 
   return c.json(
     {
