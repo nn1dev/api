@@ -58,6 +58,22 @@ app.post("/", async (c) => {
 
   const normalizeBodyEmail = normalizeEmail(email);
 
+  const { results } = await c.env.DB.prepare(
+    `select * from subscribers where email = ?`,
+  )
+    .bind(normalizeBodyEmail)
+    .run();
+
+  if (results?.length) {
+    return c.json(
+      {
+        status: "success",
+        data: results[0],
+      },
+      201,
+    );
+  }
+
   const id = crypto.randomUUID();
   const confirmation_token = crypto.randomUUID();
   await c.env.DB.prepare(
@@ -66,13 +82,13 @@ app.post("/", async (c) => {
     .bind(id, normalizeBodyEmail, false, confirmation_token)
     .run();
 
-  const { results } = await c.env.DB.prepare(
+  const { results: results2 } = await c.env.DB.prepare(
     `select * from subscribers where id = ?`,
   )
     .bind(id)
     .run();
 
-  if (!results?.length) {
+  if (!results2?.length) {
     return c.json(
       {
         status: "error",
@@ -85,7 +101,7 @@ app.post("/", async (c) => {
   return c.json(
     {
       status: "success",
-      data: results[0],
+      data: results2[0],
     },
     201,
   );

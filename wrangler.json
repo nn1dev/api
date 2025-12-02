@@ -1,5 +1,5 @@
 {
-  "compatibility_date": "2025-10-08",
+  "compatibility_date": "2025-12-01",
   "main": "src/index.ts",
   "name": "nn1-dev-api",
   "upload_source_maps": true,
