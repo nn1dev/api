@@ -129,7 +129,7 @@ app.post("/", async (c) => {
   if (emailPreviouslyConfirmed) {
     const id = crypto.randomUUID();
     await c.env.DB.prepare(
-      `insert into tickets (id, event_id, email, name, confirmed, subscribe) values (?, ?, ?, ?, ?, ?)`,
+      `insert into tickets (id, event_id, email, name, confirmed, confirmation_token, subscribe) values (?, ?, ?, ?, ?, ?, ?)`,
     )
       .bind(
         id,
@@ -137,6 +137,7 @@ app.post("/", async (c) => {
         normalizedBodyEmail,
         normalizedBodyName,
         true,
+        "",
         subscribe,
       )
       .run();
@@ -392,7 +393,7 @@ app.put("/:eventId/:ticketId", async (c) => {
   return c.json(
     {
       status: "success",
-      data: { ...results[0], confirmation_token: "", confirmed: true },
+      data: { ...results[0], confirmation_token: "", confirmed: 1 },
     },
     { status: 200 },
   );
