@@ -4,6 +4,7 @@ import { normalizeEmail, normalizeName } from "../utils";
 import { renderEmailSignupSuccess } from "../../emails/signup-success";
 import { renderEmailAdminSignupSuccess } from "../../emails/admin-signup-success";
 import { renderEmailSignupConfirm } from "../../emails/signup-confirm";
+import { renderEmailAdminSignupCancel } from "../../emails/admin-signup-cancel";
 
 const app = new Hono<{ Bindings: Cloudflare.Env }>();
 
@@ -417,6 +418,21 @@ app.delete("/:eventId/:ticketId", async (c) => {
       404,
     );
   }
+
+  const resend = new Resend(c.env.API_KEY_RESEND);
+
+  const email = await renderEmailAdminSignupCancel({
+    name: results[0].name as string,
+    email: results[0].email as string,
+  });
+
+  resend.emails.send({
+    from: "NN1 Dev Club <club@nn1.dev>",
+    to: c.env.ADMIN_EMAILS.split(","),
+    subject: "Ticket cancelled 👎",
+    html: email.html,
+    text: email.text,
+  });
 
   await c.env.DB.prepare(`delete from tickets where event_id = ? and id = ?`)
     .bind(eventId, ticketId)
