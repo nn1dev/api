@@ -1,12 +1,24 @@
 import { Hono } from "hono";
 import { normalizeEmail } from "../utils";
-import { renderEmailAdminNewsletterSubscribe } from "../emails/renderEmailAdminNewsletterSubscribe";
+import { renderEmailAdminNewsletterSubscribe } from "../../emails/admin-newsletter-subscribe";
 import { Resend } from "resend";
 
 const app = new Hono<{ Bindings: Cloudflare.Env }>();
 
+export interface Subscriber {
+  id: string;
+  email: string;
+  confirmed: number;
+  confirmation_token: string | null;
+  created_at: string;
+}
+
 app.get("/", async (c) => {
-  const { results } = await c.env.DB.prepare(`select * from subscribers`).run();
+  const { results } = await c.env.DB.prepare(
+    `select * from subscribers`,
+  ).all<Subscriber>();
+
+  console.log({ results });
 
   return c.json(
     {
@@ -20,13 +32,13 @@ app.get("/", async (c) => {
 app.get("/:subscriberId", async (c) => {
   const { subscriberId } = c.req.param();
 
-  const { results } = await c.env.DB.prepare(
+  const subscriber = await c.env.DB.prepare(
     `select * from subscribers where id = ?`,
   )
     .bind(subscriberId)
-    .run();
+    .first<Subscriber>();
 
-  if (!results?.length) {
+  if (!subscriber) {
     return c.json(
       {
         status: "error",
@@ -39,14 +51,14 @@ app.get("/:subscriberId", async (c) => {
   return c.json(
     {
       status: "success",
-      data: results[0],
+      data: subscriber,
     },
     200,
   );
 });
 
 app.post("/", async (c) => {
-  const { email } = await c.req.json();
+  const { email } = await c.req.json<{ email: string }>();
 
   if (!email) {
     return c.json(
@@ -60,17 +72,17 @@ app.post("/", async (c) => {
 
   const normalizeBodyEmail = normalizeEmail(email);
 
-  const { results } = await c.env.DB.prepare(
+  const subscriber = await c.env.DB.prepare(
     `select * from subscribers where email = ?`,
   )
     .bind(normalizeBodyEmail)
-    .run();
+    .first<Subscriber>();
 
-  if (results?.length) {
+  if (subscriber) {
     return c.json(
       {
         status: "success",
-        data: results[0],
+        data: subscriber,
       },
       201,
     );
@@ -84,13 +96,13 @@ app.post("/", async (c) => {
     .bind(id, normalizeBodyEmail, false, confirmation_token)
     .run();
 
-  const { results: results2 } = await c.env.DB.prepare(
+  const newSubscriber = await c.env.DB.prepare(
     `select * from subscribers where id = ?`,
   )
     .bind(id)
-    .run();
+    .first<Subscriber>();
 
-  if (!results2?.length) {
+  if (!newSubscriber) {
     return c.json(
       {
         status: "error",
@@ -103,7 +115,7 @@ app.post("/", async (c) => {
   return c.json(
     {
       status: "success",
-      data: results2[0],
+      data: newSubscriber,
     },
     201,
   );
@@ -113,15 +125,17 @@ app.put("/:subscriberId", async (c) => {
   const { subscriberId } = c.req.param();
 
   // TODO: Better payload validation
-  const { confirmationToken } = await c.req.json();
+  const { confirmationToken } = await c.req.json<{
+    confirmationToken: string;
+  }>();
 
-  const { results } = await c.env.DB.prepare(
+  const subscriber = await c.env.DB.prepare(
     `select * from subscribers where id = ?`,
   )
     .bind(subscriberId)
-    .run();
+    .first<Subscriber>();
 
-  if (!results?.length || results[0].confirmation_token !== confirmationToken) {
+  if (!subscriber || subscriber.confirmation_token !== confirmationToken) {
     return c.json(
       {
         status: "error",
@@ -134,13 +148,13 @@ app.put("/:subscriberId", async (c) => {
   await c.env.DB.prepare(
     `update subscribers set confirmed = ?, confirmation_token = ? where id = ?`,
   )
-    .bind(true, "", subscriberId)
+    .bind(true, null, subscriberId)
     .run();
 
   const resend = new Resend(c.env.API_KEY_RESEND);
 
   const emailAdmin = await renderEmailAdminNewsletterSubscribe({
-    email: results[0].email,
+    email: subscriber.email,
   });
   const { error } = await resend.emails.send({
     from: "NN1 Dev Club <club@nn1.dev>",
@@ -163,7 +177,7 @@ app.put("/:subscriberId", async (c) => {
   return c.json(
     {
       status: "success",
-      data: { ...results[0], confirmed: 1, confirmation_token: "" },
+      data: { ...subscriber, confirmed: 1, confirmation_token: null },
     },
     200,
   );
@@ -172,13 +186,13 @@ app.put("/:subscriberId", async (c) => {
 app.delete("/:subscriberId", async (c) => {
   const { subscriberId } = c.req.param();
 
-  const { results } = await c.env.DB.prepare(
+  const subscriber = await c.env.DB.prepare(
     `select * from subscribers where id = ?`,
   )
     .bind(subscriberId)
-    .run();
+    .first<Subscriber>();
 
-  if (!results?.length) {
+  if (!subscriber) {
     return c.json(
       {
         status: "error",
@@ -195,7 +209,7 @@ app.delete("/:subscriberId", async (c) => {
   return c.json(
     {
       status: "success",
-      data: results[0],
+      data: subscriber,
     },
     200,
   );
