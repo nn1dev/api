@@ -24,6 +24,8 @@
     "wrangler": "4.51.0"
   },
   "scripts": {
+    "deploy": "wrangler deploy",
+    "deploy:dry": "tsc && wrangler deploy --dry-run",
     "gen": "wrangler types",
     "dev": "pnpm seed:dev && wrangler dev",
     "seed:prod": "wrangler d1 migrations apply DB --remote",

@@ -1,3 +1,4 @@
+import React from "react";
 import { Hr } from "@react-email/components";
 
 function NN1Hr() {

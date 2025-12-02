@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { normalizeEmail } from "../utils";
 
 const app = new Hono<{ Bindings: Cloudflare.Env }>();
 
@@ -55,11 +56,14 @@ app.post("/", async (c) => {
     );
   }
 
+  const normalizeBodyEmail = normalizeEmail(email);
+
   const id = crypto.randomUUID();
+  const confirmation_token = crypto.randomUUID();
   await c.env.DB.prepare(
-    `insert into subscribers (id, email, confirmed) values (?, ?, ?)`,
+    `insert into subscribers (id, email, confirmed, confirmation_token) values (?, ?, ?, ?)`,
   )
-    .bind(id, email, false)
+    .bind(id, normalizeBodyEmail, false, confirmation_token)
     .run();
 
   const { results } = await c.env.DB.prepare(
@@ -90,24 +94,29 @@ app.post("/", async (c) => {
 app.put("/:subscriberId", async (c) => {
   const { subscriberId } = c.req.param();
 
+  // TODO: Better payload validation
+  const { confirmationToken } = await c.req.json();
+
   const { results } = await c.env.DB.prepare(
     `select * from subscribers where id = ?`,
   )
     .bind(subscriberId)
     .run();
 
-  if (!results?.length) {
+  if (!results?.length || results[0].confirmation_token !== confirmationToken) {
     return c.json(
       {
         status: "error",
-        data: `Subscriber with id ${subscriberId} not found`,
+        data: "invalid subscriber id or confirmation token",
       },
       404,
     );
   }
 
-  await c.env.DB.prepare(`update subscribers set confirmed = ? where id = ?`)
-    .bind(true, subscriberId)
+  await c.env.DB.prepare(
+    `update subscribers set confirmed = ?, confirmation_token = ? where id = ?`,
+  )
+    .bind(true, "", subscriberId)
     .run();
 
   return c.json(
