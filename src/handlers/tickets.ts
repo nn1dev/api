@@ -134,7 +134,7 @@ app.post("/", async (c) => {
   const emailPreviouslyConfirmed = await c.env.DB.prepare(
     `select * from tickets where email = ? and confirmed = ?`,
   )
-    .bind(normalizedBodyEmail, true)
+    .bind(normalizedBodyEmail, 1)
     .first<Ticket>();
 
   const resend = new Resend(c.env.API_KEY_RESEND);
@@ -149,7 +149,7 @@ app.post("/", async (c) => {
         eventId,
         normalizedBodyEmail,
         normalizedBodyName,
-        true,
+        1,
         null,
         subscribe,
       )
@@ -207,7 +207,7 @@ app.post("/", async (c) => {
         await c.env.DB.prepare(
           `update subscribers set confirmed = ?, confirmation_token = ? where email = ?`,
         )
-          .bind(true, null, normalizedBodyEmail)
+          .bind(1, null, normalizedBodyEmail)
           .run();
       }
 
@@ -215,7 +215,7 @@ app.post("/", async (c) => {
         await c.env.DB.prepare(
           `insert into subscribers (email, confirmed) values (?, ?)`,
         )
-          .bind(normalizedBodyEmail, true)
+          .bind(normalizedBodyEmail, 1)
           .run();
       }
     }
@@ -246,7 +246,7 @@ app.post("/", async (c) => {
       eventId,
       normalizedBodyEmail,
       normalizedBodyName,
-      false,
+      0,
       confirmation_token,
       subscribe,
     )
@@ -330,14 +330,14 @@ app.put("/:eventId/:ticketId", async (c) => {
         status: "error",
         data: "Invalid ticket id or confirmation token.",
       },
-      404,
+      400,
     );
   }
 
   await c.env.DB.prepare(
     `update tickets set confirmed = ?, confirmation_token = ?  where event_id = ? and id = ?`,
   )
-    .bind(true, null, eventId, ticketId)
+    .bind(1, null, eventId, ticketId)
     .run();
 
   const resend = new Resend(c.env.API_KEY_RESEND);
@@ -393,7 +393,7 @@ app.put("/:eventId/:ticketId", async (c) => {
       await c.env.DB.prepare(
         `update subscribers set confirmed = ?, confirmation_token = ? where email = ?`,
       )
-        .bind(true, null, ticket.email)
+        .bind(1, null, ticket.email)
         .run();
     }
 
@@ -402,7 +402,7 @@ app.put("/:eventId/:ticketId", async (c) => {
       await c.env.DB.prepare(
         `insert into subscribers (id, email, confirmed, confirmation_token) values (?, ?, ?, ?)`,
       )
-        .bind(id, ticket.email, true, null)
+        .bind(id, ticket.email, 1, null)
         .run();
     }
   }
@@ -435,6 +435,10 @@ app.delete("/:eventId/:ticketId", async (c) => {
     );
   }
 
+  await c.env.DB.prepare(`delete from tickets where event_id = ? and id = ?`)
+    .bind(eventId, ticketId)
+    .run();
+
   const resend = new Resend(c.env.API_KEY_RESEND);
 
   const email = await renderEmailAdminSignupCancel({
@@ -449,10 +453,6 @@ app.delete("/:eventId/:ticketId", async (c) => {
     html: email.html,
     text: email.text,
   });
-
-  await c.env.DB.prepare(`delete from tickets where event_id = ? and id = ?`)
-    .bind(eventId, ticketId)
-    .run();
 
   return c.json(
     {

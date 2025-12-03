@@ -50,6 +50,7 @@ app.get("/:subscriberId", async (c) => {
 app.post("/", async (c) => {
   const { email } = await c.req.json<{ email: string }>();
 
+  // TODO: Better payload validation
   if (!email) {
     return c.json(
       {
@@ -60,12 +61,12 @@ app.post("/", async (c) => {
     );
   }
 
-  const normalizeBodyEmail = normalizeEmail(email);
+  const normalizedBodyEmail = normalizeEmail(email);
 
   const subscriber = await c.env.DB.prepare(
     `select * from subscribers where email = ?`,
   )
-    .bind(normalizeBodyEmail)
+    .bind(normalizedBodyEmail)
     .first<Subscriber>();
 
   if (subscriber) {
@@ -83,7 +84,7 @@ app.post("/", async (c) => {
   await c.env.DB.prepare(
     `insert into subscribers (id, email, confirmed, confirmation_token) values (?, ?, ?, ?)`,
   )
-    .bind(id, normalizeBodyEmail, false, confirmation_token)
+    .bind(id, normalizedBodyEmail, 0, confirmation_token)
     .run();
 
   const newSubscriber = await c.env.DB.prepare(
@@ -99,6 +100,30 @@ app.post("/", async (c) => {
         data: `Subscriber with id ${id} not found.`,
       },
       404,
+    );
+  }
+
+  const resend = new Resend(c.env.API_KEY_RESEND);
+
+  const emailAdmin = await renderEmailAdminNewsletterSubscribe({
+    email: normalizedBodyEmail,
+  });
+
+  const { error } = await resend.emails.send({
+    from: "NN1 Dev Club <club@nn1.dev>",
+    to: c.env.ADMIN_EMAILS.split(","),
+    subject: "✨ Newsletter - user subscribed",
+    html: emailAdmin.html,
+    text: emailAdmin.text,
+  });
+
+  if (error) {
+    return c.json(
+      {
+        status: "error",
+        data: error,
+      },
+      { status: 400 },
     );
   }
 
@@ -131,14 +156,14 @@ app.put("/:subscriberId", async (c) => {
         status: "error",
         data: "Invalid subscriber id or confirmation token.",
       },
-      404,
+      400,
     );
   }
 
   await c.env.DB.prepare(
     `update subscribers set confirmed = ?, confirmation_token = ? where id = ?`,
   )
-    .bind(true, null, subscriberId)
+    .bind(1, null, subscriberId)
     .run();
 
   const resend = new Resend(c.env.API_KEY_RESEND);
