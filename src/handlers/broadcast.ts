@@ -87,7 +87,7 @@ app.post("/newsletter", async (c) => {
   } = body.data;
 
   if (!Object.keys(TEMPLATE_MAPPER_NEWSLETTER).includes(bodyTemplate)) {
-    return Response.json(
+    return c.json(
       {
         status: "error",
         data: "Template is not configured.",
@@ -180,7 +180,7 @@ app.post("/event", async (c) => {
   const { template: bodyTemplate, eventId: bodyEventId } = body.data;
 
   if (!Object.keys(TEMPLATE_MAPPER_EVENT).includes(bodyTemplate)) {
-    return Response.json(
+    return c.json(
       {
         status: "error",
         data: "Template is not configured.",
@@ -222,7 +222,7 @@ app.post("/event", async (c) => {
       await resend.batch.send(chunk);
     }
   } catch {
-    return Response.json(
+    return c.json(
       {
         status: "error",
         data: "Failed to schedule an email.",
