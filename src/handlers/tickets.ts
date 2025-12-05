@@ -120,7 +120,7 @@ app.post("/", async (c) => {
         status: "success",
         data: existingTicket,
       },
-      201,
+      200,
     );
   }
 

@@ -81,7 +81,7 @@ app.post("/", async (c) => {
         status: "success",
         data: subscriber,
       },
-      201,
+      200,
     );
   }
 

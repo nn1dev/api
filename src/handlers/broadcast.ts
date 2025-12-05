@@ -149,7 +149,7 @@ app.post("/newsletter", async (c) => {
         status: "error",
         data: "Failed to schedule an email.",
       },
-      { status: 500 },
+      500,
     );
   }
 
@@ -230,7 +230,7 @@ app.post("/event", async (c) => {
         status: "error",
         data: "Failed to schedule an email.",
       },
-      { status: 500 },
+      500,
     );
   }
 
