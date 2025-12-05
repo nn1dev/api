@@ -227,28 +227,32 @@ app.delete("/:subscriberId", async (c) => {
     .bind(subscriberId)
     .run();
 
-  const resend = new Resend(c.env.API_KEY_RESEND);
+  // only send a notification about the unsubscription if the user is confirmed
+  // i don't care about unconfirmed subscriptions, and we should purge them periodically
+  if (subscriber.confirmed) {
+    const resend = new Resend(c.env.API_KEY_RESEND);
 
-  const emailAdmin = await renderEmailAdminNewsletterUnsubscribe({
-    email: subscriber.email,
-  });
+    const emailAdmin = await renderEmailAdminNewsletterUnsubscribe({
+      email: subscriber.email,
+    });
 
-  const { error } = await resend.emails.send({
-    from: "NN1 Dev Club <club@nn1.dev>",
-    to: c.env.ADMIN_EMAILS.split(","),
-    subject: "✨ Newsletter - user unsubscribed",
-    html: emailAdmin.html,
-    text: emailAdmin.text,
-  });
+    const { error } = await resend.emails.send({
+      from: "NN1 Dev Club <club@nn1.dev>",
+      to: c.env.ADMIN_EMAILS.split(","),
+      subject: "✨ Newsletter - user unsubscribed",
+      html: emailAdmin.html,
+      text: emailAdmin.text,
+    });
 
-  if (error) {
-    return c.json(
-      {
-        status: "error",
-        data: error,
-      },
-      { status: 400 },
-    );
+    if (error) {
+      return c.json(
+        {
+          status: "error",
+          data: error,
+        },
+        { status: 400 },
+      );
+    }
   }
 
   return c.json(
