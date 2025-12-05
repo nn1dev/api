@@ -1,9 +1,9 @@
 import { Hono } from "hono";
+import { Resend } from "resend";
+import z from "zod";
 import { normalizeEmail } from "../utils";
 import { renderEmailAdminNewsletterSubscribe } from "../../emails/admin-newsletter-subscribe";
 import { renderEmailAdminNewsletterUnsubscribe } from "../../emails/admin-newsletter-unsubscribe";
-
-import { Resend } from "resend";
 
 const app = new Hono<{ Bindings: Cloudflare.Env }>();
 
@@ -49,11 +49,14 @@ app.get("/:subscriberId", async (c) => {
   );
 });
 
-app.post("/", async (c) => {
-  const { email } = await c.req.json<{ email: string }>();
+const SubscribersPostBody = z.object({
+  email: z.email().trim().toLowerCase(),
+});
 
-  // TODO: Better payload validation
-  if (!email) {
+app.post("/", async (c) => {
+  const body = SubscribersPostBody.safeParse(await c.req.json());
+
+  if (!body.success) {
     return c.json(
       {
         status: "error",
@@ -63,12 +66,12 @@ app.post("/", async (c) => {
     );
   }
 
-  const normalizedBodyEmail = normalizeEmail(email);
+  const { data } = body;
 
   const subscriber = await c.env.DB.prepare(
     `select * from subscribers where email = ?`,
   )
-    .bind(normalizedBodyEmail)
+    .bind(data.email)
     .first<Subscriber>();
 
   if (subscriber) {
@@ -86,7 +89,7 @@ app.post("/", async (c) => {
   await c.env.DB.prepare(
     `insert into subscribers (id, email, confirmed, confirmation_token) values (?, ?, ?, ?)`,
   )
-    .bind(id, normalizedBodyEmail, 0, confirmation_token)
+    .bind(id, data.email, 0, confirmation_token)
     .run();
 
   const newSubscriber = await c.env.DB.prepare(
@@ -142,13 +145,25 @@ app.post("/", async (c) => {
   );
 });
 
+const SubscribersPutBody = z.object({
+  confirmationToken: z.uuid(),
+});
+
 app.put("/:subscriberId", async (c) => {
   const { subscriberId } = c.req.param();
+  const body = SubscribersPutBody.safeParse(await c.req.json());
 
-  // TODO: Better payload validation
-  const { confirmationToken } = await c.req.json<{
-    confirmationToken: string;
-  }>();
+  if (!body.success) {
+    return c.json(
+      {
+        status: "error",
+        data: "Incorrect request data.",
+      },
+      400,
+    );
+  }
+
+  const { data } = body;
 
   const subscriber = await c.env.DB.prepare(
     `select * from subscribers where id = ?`,
@@ -156,7 +171,7 @@ app.put("/:subscriberId", async (c) => {
     .bind(subscriberId)
     .first<Subscriber>();
 
-  if (!subscriber || subscriber.confirmation_token !== confirmationToken) {
+  if (!subscriber || subscriber.confirmation_token !== data.confirmationToken) {
     return c.json(
       {
         status: "error",
