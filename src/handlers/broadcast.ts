@@ -65,7 +65,7 @@ const app = new Hono<{ Bindings: Cloudflare.Env }>();
 
 const BroadcastNewsletterBodySchema = z.object({
   template: z.string(),
-  excludeMembersEventId: z.string().optional(),
+  excludeMembersEventId: z.number().optional(),
 });
 
 app.post("/newsletter", async (c) => {
