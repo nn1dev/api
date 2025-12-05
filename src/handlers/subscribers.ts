@@ -3,8 +3,10 @@ import { Resend } from "resend";
 import z from "zod";
 import { renderEmailAdminNewsletterSubscribe } from "../../emails/admin-newsletter-subscribe";
 import { renderEmailAdminNewsletterUnsubscribe } from "../../emails/admin-newsletter-unsubscribe";
+import auth from "../middlewares/auth";
 
 const app = new Hono<{ Bindings: Cloudflare.Env }>();
+app.use(auth);
 
 app.get("/", async (c) => {
   const { results } = await c.env.DB.prepare(
@@ -33,7 +35,7 @@ app.get("/:subscriberId", async (c) => {
     return c.json(
       {
         status: "error",
-        data: `Subscriber with id ${subscriberId} not found.`,
+        data: `Subscriber not found.`,
       },
       404,
     );
@@ -97,7 +99,7 @@ app.post("/", async (c) => {
     return c.json(
       {
         status: "error",
-        data: `Subscriber with id ${id} not found.`,
+        data: `Subscriber not found.`,
       },
       404,
     );
@@ -129,7 +131,7 @@ app.post("/", async (c) => {
   //       status: "error",
   //       data: error,
   //     },
-  //     { status: 400 },
+  //     400,
   //   );
   // }
 
@@ -203,7 +205,7 @@ app.put("/:subscriberId", async (c) => {
         status: "error",
         data: error,
       },
-      { status: 400 },
+      400,
     );
   }
 
@@ -230,7 +232,7 @@ app.delete("/:subscriberId", async (c) => {
     return c.json(
       {
         status: "error",
-        data: `Subscriber with id ${subscriberId} not found.`,
+        data: `Subscriber not found.`,
       },
       404,
     );
@@ -258,7 +260,7 @@ app.delete("/:subscriberId", async (c) => {
         status: "error",
         data: error,
       },
-      { status: 400 },
+      400,
     );
   }
 

@@ -3,7 +3,9 @@ import { Resend } from "resend";
 import z from "zod";
 import { renderEmailEventTest, renderEmailNewsletterTest } from "../../emails";
 import { chunkArray } from "../utils";
+import auth from "../middlewares/auth";
 
+// https://resend.mintlify.dev/docs/api-reference/emails/send-batch-emails
 const RESEND_MAX_BATCH_CHUNK = 100;
 
 const TEMPLATE_MAPPER_NEWSLETTER: Record<
@@ -62,6 +64,7 @@ async function createEmailPayload({
 }
 
 const app = new Hono<{ Bindings: Cloudflare.Env }>();
+app.use(auth);
 
 const BroadcastNewsletterBodySchema = z.object({
   template: z.string(),
@@ -92,7 +95,7 @@ app.post("/newsletter", async (c) => {
         status: "error",
         data: "Template is not configured.",
       },
-      { status: 400 },
+      400,
     );
   }
 
@@ -185,7 +188,7 @@ app.post("/event", async (c) => {
         status: "error",
         data: "Template is not configured.",
       },
-      { status: 400 },
+      400,
     );
   }
 

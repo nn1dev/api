@@ -5,8 +5,11 @@ import { renderEmailSignupSuccess } from "../../emails/signup-success";
 import { renderEmailAdminSignupSuccess } from "../../emails/admin-signup-success";
 import { renderEmailSignupConfirm } from "../../emails/signup-confirm";
 import { renderEmailAdminSignupCancel } from "../../emails/admin-signup-cancel";
+import auth from "../middlewares/auth";
 
 const app = new Hono<{ Bindings: Cloudflare.Env }>();
+
+app.use(auth);
 
 app.get("/", async (c) => {
   const { results } = await c.env.DB.prepare(
@@ -53,7 +56,7 @@ app.get("/:eventId/:ticketId", async (c) => {
     return c.json(
       {
         status: "error",
-        data: `Ticket with id ${ticketId} not found.`,
+        data: `Ticket not found.`,
       },
       404,
     );
@@ -142,7 +145,7 @@ app.post("/", async (c) => {
       return c.json(
         {
           status: "error",
-          data: `Ticket with id ${newTicketId} not found.`,
+          data: `Ticket not found.`,
         },
         404,
       );
@@ -238,7 +241,7 @@ app.post("/", async (c) => {
     return c.json(
       {
         status: "error",
-        data: `Ticket with id ${id} not found.`,
+        data: `Ticket not found.`,
       },
       404,
     );
@@ -370,7 +373,7 @@ app.put("/:eventId/:ticketId", async (c) => {
         status: "error",
         data: emailUserResponse.error || emailAdminResponse.error,
       },
-      { status: 400 },
+      400,
     );
   }
 
@@ -379,7 +382,7 @@ app.put("/:eventId/:ticketId", async (c) => {
       `select * from subscribers where email = ?`,
     )
       .bind(ticket.email)
-      .first();
+      .first<Subscriber>();
 
     if (subscriber && !subscriber.confirmed) {
       await c.env.DB.prepare(
@@ -404,7 +407,7 @@ app.put("/:eventId/:ticketId", async (c) => {
       status: "success",
       data: { ...ticket, confirmed: 1, confirmation_token: null },
     },
-    { status: 200 },
+    200,
   );
 });
 
@@ -425,7 +428,7 @@ app.delete("/:eventId/:ticketId", async (c) => {
     return c.json(
       {
         status: "error",
-        data: `Ticket with id ${ticketId} not found.`,
+        data: `Ticket not found.`,
       },
       404,
     );
