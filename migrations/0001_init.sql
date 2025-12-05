@@ -16,3 +16,5 @@ CREATE TABLE IF NOT EXISTS tickets (
     subscribe INTEGER NOT NULL CHECK (subscribe IN (0, 1)),
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX idx_tickets_event_id ON tickets (event_id);
