@@ -30,6 +30,8 @@
     "dev": "pnpm seed:dev && wrangler dev",
     "seed:prod": "wrangler d1 migrations apply DB --remote",
     "seed:dev": "wrangler d1 migrations apply DB --local",
+    "nuke:prod": "npx wrangler d1 execute nn1-dev-db --remote --command=\"DROP TABLE IF EXISTS subscribers; DROP TABLE IF EXISTS tickets; DROP TABLE IF EXISTS d1_migrations;\"",
+    "nuke:dev": "npx wrangler d1 execute nn1-dev-db --local --command=\"DROP TABLE IF EXISTS subscribers; DROP TABLE IF EXISTS tickets; DROP TABLE IF EXISTS d1_migrations;\"",
     "emails:build": "email build",
     "emails:dev": "email dev",
     "emails:export": "email export"
