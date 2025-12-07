@@ -19,6 +19,9 @@ app.onError(handlerErrorServer);
 
 // routes
 app.get("/status", status);
+app.get("/sentry", (c) => {
+  throw new Error("My first Sentry error!");
+});
 app.route("/subscribers", subscribers);
 app.route("/tickets", tickets);
 app.route("/broadcast", broadcast);
