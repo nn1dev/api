@@ -36,7 +36,7 @@
     "emails:build": "email build",
     "emails:dev": "email dev",
     "emails:export": "email export",
-    "sentry:sourcemaps": "_SENTRY_RELEASE=$(sentry-cli releases propose-version) && sentry-cli releases new $_SENTRY_RELEASE --org=nn1-dev-club --project=api && sentry-cli sourcemaps upload --org=nn1-dev-club --project=api --release=$_SENTRY_RELEASE --strip-prefix 'dist/..' dist",
+    "sentry:sourcemaps": "_SENTRY_RELEASE=$(sentry-cli releases propose-version) && sentry-cli releases new $_SENTRY_RELEASE --org=nn1-dev --project=api && sentry-cli sourcemaps upload --org=nn1-dev --project=api --release=$_SENTRY_RELEASE --strip-prefix 'dist/..' dist",
     "postdeploy": "pnpm sentry:sourcemaps"
   },
   "dependencies": {
@@ -51,3 +51,4 @@
     "zod": "^4.1.13"
   }
 }
+
