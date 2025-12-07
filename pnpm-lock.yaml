@@ -14,6 +14,9 @@ importers:
       '@react-email/render':
         specifier: ^2.0.0
         version: 2.0.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@sentry/cloudflare':
+        specifier: ^10.29.0
+        version: 10.29.0
       hono:
         specifier: ^4.10.7
         version: 4.10.7
@@ -35,7 +38,7 @@ importers:
     devDependencies:
       '@react-email/preview-server':
         specifier: 5.0.5
-        version: 5.0.5(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        version: 5.0.5(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@types/react':
         specifier: ^19.2.7
         version: 19.2.7
@@ -765,6 +768,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@opentelemetry/api@1.9.0':
+    resolution: {integrity: sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==}
+    engines: {node: '>=8.0.0'}
+
   '@poppinss/colors@4.1.5':
     resolution: {integrity: sha512-FvdDqtcRCtz6hThExcFOgW0cWX+xwSMWcRuQe5ZEb2m7cVQOAVZOIMt+/v9RxGiD9/OY16qJBXK4CVKWAPalBw==}
 
@@ -936,6 +943,19 @@ packages:
 
   '@selderee/plugin-htmlparser2@0.11.0':
     resolution: {integrity: sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ==}
+
+  '@sentry/cloudflare@10.29.0':
+    resolution: {integrity: sha512-Bq4N1EeZGGUomZQoMrFxmhxK9mPmBpp7leKo1HmOFuTucUm2PV0N7n/6QrUY52aIFNYul+xLg7+ByuxpuEjb5A==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@cloudflare/workers-types': ^4.x
+    peerDependenciesMeta:
+      '@cloudflare/workers-types':
+        optional: true
+
+  '@sentry/core@10.29.0':
+    resolution: {integrity: sha512-olQ2DU9dA/Bwsz3PtA9KNXRMqBWRQSkPw+MxwWEoU1K1qtiM9L0j6lbEFb5iSY3d7WYD5MB+1d5COugjSBrHtw==}
+    engines: {node: '>=18'}
 
   '@sindresorhus/is@7.1.1':
     resolution: {integrity: sha512-rO92VvpgMc3kfiTjGT52LEtJ8Yc5kCWhZjLQ3LwlA4pSgPpQO7bVpYXParOD8Jwf+cVQECJo3yP/4I8aZtUQTQ==}
@@ -2198,6 +2218,8 @@ snapshots:
   '@next/swc-win32-x64-msvc@16.0.1':
     optional: true
 
+  '@opentelemetry/api@1.9.0': {}
+
   '@poppinss/colors@4.1.5':
     dependencies:
       kleur: 4.1.5
@@ -2294,9 +2316,9 @@ snapshots:
       marked: 15.0.12
       react: 19.2.1
 
-  '@react-email/preview-server@5.0.5(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@react-email/preview-server@5.0.5(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
-      next: 16.0.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      next: 16.0.1(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
     transitivePeerDependencies:
       - '@babel/core'
       - '@opentelemetry/api'
@@ -2351,6 +2373,13 @@ snapshots:
     dependencies:
       domhandler: 5.0.3
       selderee: 0.11.0
+
+  '@sentry/cloudflare@10.29.0':
+    dependencies:
+      '@opentelemetry/api': 1.9.0
+      '@sentry/core': 10.29.0
+
+  '@sentry/core@10.29.0': {}
 
   '@sindresorhus/is@7.1.1': {}
 
@@ -2769,7 +2798,7 @@ snapshots:
 
   negotiator@0.6.3: {}
 
-  next@16.0.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+  next@16.0.1(@opentelemetry/api@1.9.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       '@next/env': 16.0.1
       '@swc/helpers': 0.5.15
@@ -2787,6 +2816,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 16.0.1
       '@next/swc-win32-arm64-msvc': 16.0.1
       '@next/swc-win32-x64-msvc': 16.0.1
+      '@opentelemetry/api': 1.9.0
       sharp: 0.34.5
     transitivePeerDependencies:
       - '@babel/core'
