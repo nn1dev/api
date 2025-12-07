@@ -19,18 +19,6 @@ app.onError(handlerErrorServer);
 
 // routes
 app.get("/status", status);
-app.get("/sentry", async () => {
-  await Sentry.startSpan(
-    {
-      op: "test",
-      name: "My First Test Transaction",
-    },
-    async () => {
-      await new Promise((resolve) => setTimeout(resolve, 100)); // Wait for 100ms
-      throw new Error("Four!");
-    },
-  );
-});
 app.route("/subscribers", subscribers);
 app.route("/tickets", tickets);
 app.route("/broadcast", broadcast);
