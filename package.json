@@ -18,13 +18,14 @@
   },
   "devDependencies": {
     "@react-email/preview-server": "5.0.5",
+    "@sentry/cli": "^2.58.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "typescript": "5.9.3",
     "wrangler": "4.53.0"
   },
   "scripts": {
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy --outdir dist --upload-source-maps --var SENTRY_RELEASE:$(sentry-cli releases propose-version)",
     "deploy:dry": "tsc && wrangler deploy --dry-run",
     "gen": "wrangler types",
     "dev": "pnpm seed:dev && wrangler dev",
@@ -34,7 +35,9 @@
     "nuke:dev": "npx wrangler d1 execute nn1-dev-db --local --command=\"DROP TABLE IF EXISTS subscribers; DROP TABLE IF EXISTS tickets; DROP TABLE IF EXISTS d1_migrations;\"",
     "emails:build": "email build",
     "emails:dev": "email dev",
-    "emails:export": "email export"
+    "emails:export": "email export",
+    "sentry:sourcemaps": "_SENTRY_RELEASE=$(sentry-cli releases propose-version) && sentry-cli releases new $_SENTRY_RELEASE --org=nn1-dev-club --project=api && sentry-cli sourcemaps upload --org=nn1-dev-club --project=api --release=$_SENTRY_RELEASE --strip-prefix 'dist/..' dist",
+    "postdeploy": "pnpm sentry:sourcemaps"
   },
   "dependencies": {
     "@react-email/components": "^1.0.1",
