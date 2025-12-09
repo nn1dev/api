@@ -1,20 +1,28 @@
 import { Hono } from "hono";
 import { Resend } from "resend";
 import z from "zod";
+import * as Sentry from "@sentry/cloudflare";
 import { renderEmailSignupSuccess } from "../../emails/signup-success";
 import { renderEmailAdminSignupSuccess } from "../../emails/admin-signup-success";
 import { renderEmailSignupConfirm } from "../../emails/signup-confirm";
 import { renderEmailAdminSignupCancel } from "../../emails/admin-signup-cancel";
 import auth from "../middlewares/auth";
 
-const app = new Hono<{ Bindings: Cloudflare.Env }>();
+const app = new Hono<{
+  Bindings: Cloudflare.Env;
+  Variables: { db: D1Database };
+}>();
 
 app.use(auth);
+app.use("*", async (c, next) => {
+  c.set("db", Sentry.instrumentD1WithSentry(c.env.DB));
+  await next();
+});
 
 app.get("/", async (c) => {
-  const { results } = await c.env.DB.prepare(
-    `select * from tickets`,
-  ).all<Ticket>();
+  const db = c.get("db");
+
+  const { results } = await db.prepare(`select * from tickets`).all<Ticket>();
 
   return c.json(
     {
@@ -26,11 +34,11 @@ app.get("/", async (c) => {
 });
 
 app.get("/:eventId", async (c) => {
+  const db = c.get("db");
   const { eventId } = c.req.param();
 
-  const { results } = await c.env.DB.prepare(
-    `select * from tickets where event_id = ?`,
-  )
+  const { results } = await db
+    .prepare(`select * from tickets where event_id = ?`)
     .bind(eventId)
     .all<Ticket>();
 
@@ -44,11 +52,11 @@ app.get("/:eventId", async (c) => {
 });
 
 app.get("/:eventId/:ticketId", async (c) => {
+  const db = c.get("db");
   const { eventId, ticketId } = c.req.param();
 
-  const ticket = await c.env.DB.prepare(
-    `select * from tickets where event_id = ? and id = ?`,
-  )
+  const ticket = await db
+    .prepare(`select * from tickets where event_id = ? and id = ?`)
     .bind(eventId, ticketId)
     .first<Ticket>();
 
@@ -84,6 +92,7 @@ const TicketsPostBodySchema = z.object({
 });
 
 app.post("/", async (c) => {
+  const db = c.get("db");
   const body = TicketsPostBodySchema.safeParse(await c.req.json());
 
   if (!body.success) {
@@ -108,9 +117,8 @@ app.post("/", async (c) => {
     subscribe,
   } = body.data;
 
-  const existingTicket = await c.env.DB.prepare(
-    `select * from tickets where event_id = ? and email = ?`,
-  )
+  const existingTicket = await db
+    .prepare(`select * from tickets where event_id = ? and email = ?`)
     .bind(eventId, email)
     .first<Ticket>();
 
@@ -124,9 +132,8 @@ app.post("/", async (c) => {
     );
   }
 
-  const emailPreviouslyConfirmed = await c.env.DB.prepare(
-    `select * from tickets where email = ? and confirmed = ?`,
-  )
+  const emailPreviouslyConfirmed = await db
+    .prepare(`select * from tickets where email = ? and confirmed = ?`)
     .bind(email, 1)
     .first<Ticket>();
 
@@ -134,11 +141,13 @@ app.post("/", async (c) => {
 
   if (emailPreviouslyConfirmed) {
     const newTicketId = crypto.randomUUID();
-    const [_, newTicketResult] = await c.env.DB.batch<Ticket>([
-      c.env.DB.prepare(
-        `insert into tickets (id, event_id, email, name, confirmed, confirmation_token, subscribe) values (?, ?, ?, ?, ?, ?, ?)`,
-      ).bind(newTicketId, eventId, email, name, 1, null, subscribe),
-      c.env.DB.prepare(`select * from tickets where id = ?`).bind(newTicketId),
+    const [_, newTicketResult] = await db.batch<Ticket>([
+      db
+        .prepare(
+          `insert into tickets (id, event_id, email, name, confirmed, confirmation_token, subscribe) values (?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .bind(newTicketId, eventId, email, name, 1, null, subscribe),
+      db.prepare(`select * from tickets where id = ?`).bind(newTicketId),
     ]);
 
     if (!newTicketResult.results.length) {
@@ -194,25 +203,26 @@ app.post("/", async (c) => {
     }
 
     if (subscribe) {
-      const subscriber = await c.env.DB.prepare(
-        `select * from subscribers where email = ?`,
-      )
+      const subscriber = await db
+        .prepare(`select * from subscribers where email = ?`)
         .bind(email)
         .first<Subscriber>();
 
       if (subscriber && !subscriber.confirmed) {
-        await c.env.DB.prepare(
-          `update subscribers set confirmed = ?, confirmation_token = ? where email = ?`,
-        )
+        await db
+          .prepare(
+            `update subscribers set confirmed = ?, confirmation_token = ? where email = ?`,
+          )
           .bind(1, null, email)
           .run();
       }
 
       if (!subscriber) {
         const newSubscriberId = crypto.randomUUID();
-        await c.env.DB.prepare(
-          `insert into subscribers (id, email, confirmed, confirmation_token) values (?, ?, ?, ?)`,
-        )
+        await db
+          .prepare(
+            `insert into subscribers (id, email, confirmed, confirmation_token) values (?, ?, ?, ?)`,
+          )
           .bind(newSubscriberId, email, 1, null)
           .run();
       }
@@ -230,11 +240,13 @@ app.post("/", async (c) => {
   const id = crypto.randomUUID();
   const confirmation_token = crypto.randomUUID();
 
-  const [_, ticketsResult] = await c.env.DB.batch<Ticket>([
-    c.env.DB.prepare(
-      `insert into tickets (id, event_id, email, name, confirmed,  confirmation_token, subscribe ) values (?, ?, ?, ?, ?, ?, ?)`,
-    ).bind(id, eventId, email, name, 0, confirmation_token, subscribe),
-    c.env.DB.prepare(`select * from tickets where id = ?`).bind(id),
+  const [_, ticketsResult] = await db.batch<Ticket>([
+    db
+      .prepare(
+        `insert into tickets (id, event_id, email, name, confirmed,  confirmation_token, subscribe ) values (?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .bind(id, eventId, email, name, 0, confirmation_token, subscribe),
+    db.prepare(`select * from tickets where id = ?`).bind(id),
   ]);
 
   if (!ticketsResult.results.length) {
@@ -291,6 +303,7 @@ const TicketsPutBodySchema = z.object({
 });
 
 app.put("/:eventId/:ticketId", async (c) => {
+  const db = c.get("db");
   const { eventId, ticketId } = c.req.param();
   const body = TicketsPutBodySchema.safeParse(await c.req.json());
 
@@ -313,9 +326,8 @@ app.put("/:eventId/:ticketId", async (c) => {
     eventInviteUrlGoogle,
   } = body.data;
 
-  const ticket = await c.env.DB.prepare(
-    `select * from tickets where event_id = ? and id = ?`,
-  )
+  const ticket = await db
+    .prepare(`select * from tickets where event_id = ? and id = ?`)
     .bind(eventId, ticketId)
     .first<Ticket>();
 
@@ -329,9 +341,10 @@ app.put("/:eventId/:ticketId", async (c) => {
     );
   }
 
-  await c.env.DB.prepare(
-    `update tickets set confirmed = ?, confirmation_token = ?  where event_id = ? and id = ?`,
-  )
+  await db
+    .prepare(
+      `update tickets set confirmed = ?, confirmation_token = ?  where event_id = ? and id = ?`,
+    )
     .bind(1, null, eventId, ticketId)
     .run();
 
@@ -378,25 +391,26 @@ app.put("/:eventId/:ticketId", async (c) => {
   }
 
   if (ticket.subscribe) {
-    const subscriber = await c.env.DB.prepare(
-      `select * from subscribers where email = ?`,
-    )
+    const subscriber = await db
+      .prepare(`select * from subscribers where email = ?`)
       .bind(ticket.email)
       .first<Subscriber>();
 
     if (subscriber && !subscriber.confirmed) {
-      await c.env.DB.prepare(
-        `update subscribers set confirmed = ?, confirmation_token = ? where email = ?`,
-      )
+      await db
+        .prepare(
+          `update subscribers set confirmed = ?, confirmation_token = ? where email = ?`,
+        )
         .bind(1, null, ticket.email)
         .run();
     }
 
     if (!subscriber) {
       const id = crypto.randomUUID();
-      await c.env.DB.prepare(
-        `insert into subscribers (id, email, confirmed, confirmation_token) values (?, ?, ?, ?)`,
-      )
+      await db
+        .prepare(
+          `insert into subscribers (id, email, confirmed, confirmation_token) values (?, ?, ?, ?)`,
+        )
         .bind(id, ticket.email, 1, null)
         .run();
     }
@@ -412,16 +426,16 @@ app.put("/:eventId/:ticketId", async (c) => {
 });
 
 app.delete("/:eventId/:ticketId", async (c) => {
+  const db = c.get("db");
   const { eventId, ticketId } = c.req.param();
 
-  const [ticketResult, _] = await c.env.DB.batch<Ticket>([
-    c.env.DB.prepare(
-      `select * from tickets where event_id = ? and id = ?`,
-    ).bind(eventId, ticketId),
-    c.env.DB.prepare(`delete from tickets where event_id = ? and id = ?`).bind(
-      eventId,
-      ticketId,
-    ),
+  const [ticketResult, _] = await db.batch<Ticket>([
+    db
+      .prepare(`select * from tickets where event_id = ? and id = ?`)
+      .bind(eventId, ticketId),
+    db
+      .prepare(`delete from tickets where event_id = ? and id = ?`)
+      .bind(eventId, ticketId),
   ]);
 
   if (!ticketResult.results.length) {

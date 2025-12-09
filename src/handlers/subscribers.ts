@@ -1,17 +1,28 @@
 import { Hono } from "hono";
 import { Resend } from "resend";
 import z from "zod";
+import * as Sentry from "@sentry/cloudflare";
 import { renderEmailAdminNewsletterSubscribe } from "../../emails/admin-newsletter-subscribe";
 import { renderEmailAdminNewsletterUnsubscribe } from "../../emails/admin-newsletter-unsubscribe";
 import auth from "../middlewares/auth";
 
-const app = new Hono<{ Bindings: Cloudflare.Env }>();
+const app = new Hono<{
+  Bindings: Cloudflare.Env;
+  Variables: { db: D1Database };
+}>();
+
 app.use(auth);
+app.use("*", async (c, next) => {
+  c.set("db", Sentry.instrumentD1WithSentry(c.env.DB));
+  await next();
+});
 
 app.get("/", async (c) => {
-  const { results } = await c.env.DB.prepare(
-    `select * from subscribers`,
-  ).all<Subscriber>();
+  const db = c.get("db");
+
+  const { results } = await db
+    .prepare(`select * from subscribers`)
+    .all<Subscriber>();
 
   return c.json(
     {
@@ -23,11 +34,11 @@ app.get("/", async (c) => {
 });
 
 app.get("/:subscriberId", async (c) => {
+  const db = c.get("db");
   const { subscriberId } = c.req.param();
 
-  const subscriber = await c.env.DB.prepare(
-    `select * from subscribers where id = ?`,
-  )
+  const subscriber = await db
+    .prepare(`select * from subscribers where id = ?`)
     .bind(subscriberId)
     .first<Subscriber>();
 
@@ -55,6 +66,7 @@ const SubscribersPostBodySchema = z.object({
 });
 
 app.post("/", async (c) => {
+  const db = c.get("db");
   const body = SubscribersPostBodySchema.safeParse(await c.req.json());
 
   if (!body.success) {
@@ -69,9 +81,8 @@ app.post("/", async (c) => {
 
   const { email } = body.data;
 
-  const subscriber = await c.env.DB.prepare(
-    `select * from subscribers where email = ?`,
-  )
+  const subscriber = await db
+    .prepare(`select * from subscribers where email = ?`)
     .bind(email)
     .first<Subscriber>();
 
@@ -88,11 +99,13 @@ app.post("/", async (c) => {
   const id = crypto.randomUUID();
   const confirmation_token = crypto.randomUUID();
 
-  const [_, subscriberResult] = await c.env.DB.batch<Subscriber>([
-    c.env.DB.prepare(
-      `insert into subscribers (id, email, confirmed, confirmation_token) values (?, ?, ?, ?)`,
-    ).bind(id, email, 0, confirmation_token),
-    c.env.DB.prepare(`select * from subscribers where id = ?`).bind(id),
+  const [_, subscriberResult] = await db.batch<Subscriber>([
+    db
+      .prepare(
+        `insert into subscribers (id, email, confirmed, confirmation_token) values (?, ?, ?, ?)`,
+      )
+      .bind(id, email, 0, confirmation_token),
+    db.prepare(`select * from subscribers where id = ?`).bind(id),
   ]);
 
   if (!subscriberResult.results.length) {
@@ -149,6 +162,7 @@ const SubscribersPutBodySchema = z.object({
 });
 
 app.put("/:subscriberId", async (c) => {
+  const db = c.get("db");
   const { subscriberId } = c.req.param();
   const body = SubscribersPutBodySchema.safeParse(await c.req.json());
 
@@ -164,9 +178,8 @@ app.put("/:subscriberId", async (c) => {
 
   const { confirmationToken } = body.data;
 
-  const subscriber = await c.env.DB.prepare(
-    `select * from subscribers where id = ?`,
-  )
+  const subscriber = await db
+    .prepare(`select * from subscribers where id = ?`)
     .bind(subscriberId)
     .first<Subscriber>();
 
@@ -180,9 +193,10 @@ app.put("/:subscriberId", async (c) => {
     );
   }
 
-  await c.env.DB.prepare(
-    `update subscribers set confirmed = ?, confirmation_token = ? where id = ?`,
-  )
+  await db
+    .prepare(
+      `update subscribers set confirmed = ?, confirmation_token = ? where id = ?`,
+    )
     .bind(1, null, subscriberId)
     .run();
 
@@ -219,13 +233,12 @@ app.put("/:subscriberId", async (c) => {
 });
 
 app.delete("/:subscriberId", async (c) => {
+  const db = c.get("db");
   const { subscriberId } = c.req.param();
 
-  const [subscriberResult, _] = await c.env.DB.batch<Subscriber>([
-    c.env.DB.prepare(`select * from subscribers where id = ?`).bind(
-      subscriberId,
-    ),
-    c.env.DB.prepare(`delete from subscribers where id = ?`).bind(subscriberId),
+  const [subscriberResult, _] = await db.batch<Subscriber>([
+    db.prepare(`select * from subscribers where id = ?`).bind(subscriberId),
+    db.prepare(`delete from subscribers where id = ?`).bind(subscriberId),
   ]);
 
   if (!subscriberResult.results.length) {

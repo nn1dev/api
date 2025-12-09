@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { Resend } from "resend";
 import z from "zod";
+import * as Sentry from "@sentry/cloudflare";
 import { renderEmailNewsletter_2025_12_06 } from "../../emails";
 import { chunkArray } from "../utils";
 import auth from "../middlewares/auth";
@@ -67,8 +68,15 @@ async function createEmailPayload({
   };
 }
 
-const app = new Hono<{ Bindings: Cloudflare.Env }>();
+const app = new Hono<{
+  Bindings: Cloudflare.Env;
+  Variables: { db: D1Database };
+}>();
 app.use(auth);
+app.use("*", async (c, next) => {
+  c.set("db", Sentry.instrumentD1WithSentry(c.env.DB));
+  await next();
+});
 
 const BroadcastNewsletterBodySchema = z.object({
   template: z.string(),
@@ -76,6 +84,7 @@ const BroadcastNewsletterBodySchema = z.object({
 });
 
 app.post("/newsletter", async (c) => {
+  const db = c.get("db");
   const body = BroadcastNewsletterBodySchema.safeParse(await c.req.json());
 
   if (!body.success) {
@@ -108,15 +117,14 @@ app.post("/newsletter", async (c) => {
       bodyTemplate as keyof typeof TEMPLATE_MAPPER_NEWSLETTER
     ];
 
-  const { results: subscribers } = await c.env.DB.prepare(
-    `select * from subscribers where confirmed = 1`,
-  ).all<Subscriber>();
+  const { results: subscribers } = await db
+    .prepare(`select * from subscribers where confirmed = 1`)
+    .all<Subscriber>();
 
   const excludedMembers = bodyExcludeMembersEventId
     ? (
-        await c.env.DB.prepare(
-          `select * from tickets where event_id = ? and confirmed = 1`,
-        )
+        await db
+          .prepare(`select * from tickets where event_id = ? and confirmed = 1`)
           .bind(bodyExcludeMembersEventId)
           .all<Ticket>()
       ).results
@@ -172,6 +180,7 @@ const BroadcastEventBodySchema = z.object({
 });
 
 app.post("/event", async (c) => {
+  const db = c.get("db");
   const body = BroadcastEventBodySchema.safeParse(await c.req.json());
 
   if (!body.success) {
@@ -200,9 +209,8 @@ app.post("/event", async (c) => {
     TEMPLATE_MAPPER_EVENT[bodyTemplate as keyof typeof TEMPLATE_MAPPER_EVENT];
 
   const entries = (
-    await c.env.DB.prepare(
-      `select * from tickets where event_id = ? and confirmed = 1`,
-    )
+    await db
+      .prepare(`select * from tickets where event_id = ? and confirmed = 1`)
       .bind(bodyEventId)
       .all<Ticket>()
   ).results;
