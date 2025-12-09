@@ -20,7 +20,7 @@ app.onError(handlerErrorServer);
 // routes
 app.get("/status", status);
 app.get("/sentry", async (c) => {
-  console.log({ sentryRelease: c.env.SENTRY_RELEASE });
+  console.log(`Sentry release value is ${c.env.SENTRY_RELEASE}`);
 
   return await Sentry.startSpan(
     {
