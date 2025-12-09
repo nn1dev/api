@@ -16,6 +16,8 @@ jobs:
         run: pnpm install
       - name: Build & Deploy Worker
         uses: cloudflare/wrangler-action@v3
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         with:
           command: deploy --outdir dist --upload-source-maps --var SENTRY_RELEASE:$(sentry-cli releases propose-version)
           postCommands: _SENTRY_RELEASE=$(npx sentry-cli releases propose-version) && npx sentry-cli releases new $_SENTRY_RELEASE --org=nn1-dev --project=api && sentry-cli sourcemaps upload --org=nn1-dev --project=api --release=$_SENTRY_RELEASE --strip-prefix 'dist/..' dist
