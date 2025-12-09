@@ -4,7 +4,7 @@ const status = (c: Context<{ Bindings: Cloudflare.Env }>) =>
   c.json(
     {
       status: "success",
-      data: "API is running",
+      data: "🐘💨",
     },
     200,
   );
