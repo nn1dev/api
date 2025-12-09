@@ -16,10 +16,8 @@ jobs:
         run: pnpm install
       - name: Build & Deploy Worker
         uses: cloudflare/wrangler-action@v3
-        env:
-          SENTRY_RELEASE: ${{ github.sha }}
         with:
-          command: deploy --outdir dist --upload-source-maps --var SENTRY_RELEASE:$SENTRY_RELEASE
+          command: deploy --outdir dist --upload-source-maps --var SENTRY_RELEASE:${{ github.sha }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       - name: Install Sentry CLI
