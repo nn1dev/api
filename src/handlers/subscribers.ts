@@ -8,6 +8,7 @@ import {
 } from "@sentry/cloudflare";
 import { renderEmailAdminNewsletterSubscribe } from "../../emails/admin-newsletter-subscribe";
 import { renderEmailAdminNewsletterUnsubscribe } from "../../emails/admin-newsletter-unsubscribe";
+import { renderEmailSubscriberConfirm } from "../../emails/newsletter-confirm";
 import auth from "../middlewares/auth";
 import {
   ERROR_MESSAGE_BAD_REQUEST,
@@ -141,33 +142,30 @@ app.post("/", async (c) => {
 
   const newSubscriber = subscriberResult.results[0];
 
-  // here we should send an email to confirm a subscription,
-  // we dont have a template for it now, nor we have a support for it on the
-  // frontend so this one can wait
-  //
-  // const resend = new Resend(c.env.API_KEY_RESEND);
-  //
-  // const emailAdmin = await renderEmailAdminNewsletterSubscribe({
-  //   email: normalizedBodyEmail,
-  // });
-  //
-  // const { error } = await resend.emails.send({
-  //   from: "NN1 Dev Club <club@nn1.dev>",
-  //   to: c.env.ADMIN_EMAILS.split(","),
-  //   subject: "✨ Newsletter - user subscribed",
-  //   html: emailAdmin.html,
-  //   text: emailAdmin.text,
-  // });
-  //
-  // if (error) {
-  //   return c.json(
-  //     {
-  //       status: "error",
-  //       data: error,
-  //     },
-  //     400,
-  //   );
-  // }
+  const emailTemplate = await renderEmailSubscriberConfirm({
+    url: `${c.env.URL_CLIENT}/newsletter/${newSubscriber.id}/${newSubscriber.confirmation_token}`,
+  });
+
+  const resend = new Resend(c.env.API_KEY_RESEND);
+
+  const { error } = await resend.emails.send({
+    from: "NN1 Dev Club <club@nn1.dev>",
+    to: email,
+    subject: "Confirm your email please",
+    html: emailTemplate.html,
+    text: emailTemplate.text,
+  });
+
+  if (error) {
+    captureException(error);
+    return c.json(
+      {
+        status: "error",
+        data: error,
+      },
+      400,
+    );
+  }
 
   return c.json(
     {
