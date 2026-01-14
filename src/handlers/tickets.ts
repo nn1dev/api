@@ -15,6 +15,7 @@ import {
   ERROR_MESSAGE_BAD_REQUEST,
   ERROR_MESSAGE_DATA_CONFLICT,
 } from "../constants";
+import { renderEmailAdminNewsletterSubscribe } from "../../emails/admin-newsletter-subscribe";
 
 const app = new Hono<{
   Bindings: Cloudflare.Env;
@@ -238,6 +239,28 @@ app.post("/", async (c) => {
           )
           .bind(1, null, email)
           .run();
+
+        const emailAdmin = await renderEmailAdminNewsletterSubscribe({
+          email: subscriber.email,
+        });
+        const { error } = await resend.emails.send({
+          from: "NN1 Dev Club <club@nn1.dev>",
+          to: c.env.ADMIN_EMAILS.split(","),
+          subject: "✨ Newsletter - user subscribed",
+          html: emailAdmin.html,
+          text: emailAdmin.text,
+        });
+
+        if (error) {
+          captureException(error);
+          return c.json(
+            {
+              status: "error",
+              data: error,
+            },
+            400,
+          );
+        }
       }
 
       if (!subscriber) {
@@ -248,6 +271,28 @@ app.post("/", async (c) => {
           )
           .bind(newSubscriberId, email, 1, null)
           .run();
+
+        const emailAdmin = await renderEmailAdminNewsletterSubscribe({
+          email,
+        });
+        const { error } = await resend.emails.send({
+          from: "NN1 Dev Club <club@nn1.dev>",
+          to: c.env.ADMIN_EMAILS.split(","),
+          subject: "✨ Newsletter - user subscribed",
+          html: emailAdmin.html,
+          text: emailAdmin.text,
+        });
+
+        if (error) {
+          captureException(error);
+          return c.json(
+            {
+              status: "error",
+              data: error,
+            },
+            400,
+          );
+        }
       }
     }
 
@@ -443,6 +488,28 @@ app.put("/:eventId/:ticketId", async (c) => {
         )
         .bind(1, null, ticket.email)
         .run();
+
+      const emailAdmin = await renderEmailAdminNewsletterSubscribe({
+        email: subscriber.email,
+      });
+      const { error } = await resend.emails.send({
+        from: "NN1 Dev Club <club@nn1.dev>",
+        to: c.env.ADMIN_EMAILS.split(","),
+        subject: "✨ Newsletter - user subscribed",
+        html: emailAdmin.html,
+        text: emailAdmin.text,
+      });
+
+      if (error) {
+        captureException(error);
+        return c.json(
+          {
+            status: "error",
+            data: error,
+          },
+          400,
+        );
+      }
     }
 
     if (!subscriber) {
@@ -453,6 +520,28 @@ app.put("/:eventId/:ticketId", async (c) => {
         )
         .bind(id, ticket.email, 1, null)
         .run();
+
+      const emailAdmin = await renderEmailAdminNewsletterSubscribe({
+        email: ticket.email,
+      });
+      const { error } = await resend.emails.send({
+        from: "NN1 Dev Club <club@nn1.dev>",
+        to: c.env.ADMIN_EMAILS.split(","),
+        subject: "✨ Newsletter - user subscribed",
+        html: emailAdmin.html,
+        text: emailAdmin.text,
+      });
+
+      if (error) {
+        captureException(error);
+        return c.json(
+          {
+            status: "error",
+            data: error,
+          },
+          400,
+        );
+      }
     }
   }
 
