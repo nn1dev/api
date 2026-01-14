@@ -17,11 +17,11 @@
     "publish": true
   },
   "devDependencies": {
-    "@react-email/preview-server": "5.0.6",
-    "@types/react": "^19.2.7",
+    "@react-email/preview-server": "5.2.3",
+    "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "typescript": "5.9.3",
-    "wrangler": "4.53.0"
+    "wrangler": "4.59.1"
   },
   "scripts": {
     "gen": "wrangler types",
@@ -35,14 +35,14 @@
     "emails:export": "email export"
   },
   "dependencies": {
-    "@react-email/components": "^1.0.1",
-    "@react-email/render": "^2.0.0",
-    "@sentry/cloudflare": "^10.29.0",
-    "hono": "^4.10.8",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1",
-    "react-email": "^5.0.6",
-    "resend": "^6.6.0",
-    "zod": "^4.1.13"
+    "@react-email/components": "^1.0.4",
+    "@react-email/render": "^2.0.2",
+    "@sentry/cloudflare": "^10.33.0",
+    "hono": "^4.11.4",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-email": "^5.2.3",
+    "resend": "^6.7.0",
+    "zod": "^4.3.5"
   }
 }
