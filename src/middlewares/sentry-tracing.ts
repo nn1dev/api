@@ -1,5 +1,5 @@
 import { Context, Next } from "hono";
-import { startSpan } from "@sentry/cloudflare";
+import { continueTrace, startSpan } from "@sentry/cloudflare";
 
 const sentryTracing = async (
   c: Context<{ Bindings: Cloudflare.Env }>,
@@ -8,23 +8,32 @@ const sentryTracing = async (
   const method = c.req.method;
   const path = new URL(c.req.url).pathname;
 
-  return await startSpan(
-    {
-      name: `${method} ${path}`,
-      op: "http.server",
-      attributes: {
-        "http.method": method,
-        "http.route": path,
-        "http.url": c.req.url,
-      },
-    },
-    async (span) => {
-      await next();
+  // Extract trace headers from incoming request
+  const sentryTrace = c.req.header("sentry-trace");
+  const baggage = c.req.header("baggage");
 
-      // Add response status to span
-      span?.setAttribute("http.status_code", c.res.status);
+  return await continueTrace(
+    { sentryTrace, baggage },
+    async () => {
+      return await startSpan(
+        {
+          name: `${method} ${path}`,
+          op: "http.server",
+          attributes: {
+            "http.method": method,
+            "http.route": path,
+            "http.url": c.req.url,
+          },
+        },
+        async (span) => {
+          await next();
 
-      return c.res;
+          // Add response status to span
+          span?.setAttribute("http.status_code", c.res.status);
+
+          return c.res;
+        },
+      );
     },
   );
 };
