@@ -38,11 +38,11 @@
     "@react-email/components": "^1.0.6",
     "@react-email/render": "^2.0.4",
     "@sentry/cloudflare": "^10.36.0",
-    "hono": "^4.11.5",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "hono": "^4.11.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "react-email": "^5.2.5",
     "resend": "^6.8.0",
-    "zod": "^4.3.5"
+    "zod": "^4.3.6"
   }
 }
