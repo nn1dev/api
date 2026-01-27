@@ -6,7 +6,11 @@ import {
   captureException,
   captureMessage,
 } from "@sentry/cloudflare";
-import { renderEmailNewsletter_2026_01_14 } from "../../emails";
+import {
+  renderEmailNewsletter_2026_01_27,
+  renderEmailEvent_10_2026_01_28,
+  renderEmailEvent_10_2026_01_30,
+} from "../../emails";
 import { chunkArray } from "../utils";
 import auth from "../middlewares/auth";
 import { ERROR_MESSAGE_BAD_REQUEST } from "../constants";
@@ -29,9 +33,8 @@ const TEMPLATE_MAPPER_NEWSLETTER: Record<
   //   subject: "✨ NN1 Dev Club #Test Newsletter",
   // },
   "2026-01-14": {
-    template: renderEmailNewsletter_2026_01_14,
-    subject:
-      "✨ NN1 Dev Club #10 with Keith Cirkel, Samantha Wildman and Ian Zant-Boer",
+    template: renderEmailNewsletter_2026_01_27,
+    subject: "✨ NN1 Dev Club #10 is on Thursday!",
   },
 };
 
@@ -49,6 +52,14 @@ const TEMPLATE_MAPPER_EVENT: Record<
   //   template: renderEmailEventTest,
   //   subject: "✨ NN1 Dev Club #Test Event",
   // },
+  "10-2026-01-28": {
+    template: renderEmailEvent_10_2026_01_28,
+    subject: "✨ NN1 Dev Club #10 - We will see you tomorrow!",
+  },
+  "10-2026-01-30": {
+    template: renderEmailEvent_10_2026_01_30,
+    subject: "✨ NN1 Dev Club #10 - Thank you for attending!",
+  },
 };
 
 async function createEmailPayload({

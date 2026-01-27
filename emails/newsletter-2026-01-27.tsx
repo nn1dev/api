@@ -63,10 +63,10 @@ Email.PreviewProps = {
   unsubscribeUrl: "#",
 } as EmailProps;
 
-const renderEmailNewsletter_2026_01_14 = async (props: EmailProps) => ({
+const renderEmailNewsletter_2026_01_27 = async (props: EmailProps) => ({
   html: await render(<Email {...props} />),
   text: await render(<Email {...props} />, { plainText: true }),
 });
 
 export default Email;
-export { renderEmailNewsletter_2026_01_14 };
+export { renderEmailNewsletter_2026_01_27 };

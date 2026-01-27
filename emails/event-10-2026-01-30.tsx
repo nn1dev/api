@@ -1,8 +1,8 @@
 import { render } from "@react-email/render";
-import Layout from "../components/Layout.tsx";
-import Text from "../components/Text.tsx";
-import Link from "../components/Link.tsx";
-import Socials from "../components/Socials.tsx";
+import Layout from "../components/Layout";
+import Text from "../components/Text";
+import Link from "../components/Link";
+import Socials from "../components/Socials";
 
 interface EmailProps {
   ticketUrl: string;
@@ -38,10 +38,10 @@ Email.PreviewProps = {
   ticketUrl: "https://nn1.dev/events/5/123",
 } as EmailProps;
 
-const renderEmailEvent_9_2025_11_28 = async ({ ticketUrl }: EmailProps) => ({
+const renderEmailEvent_10_2026_01_30 = async ({ ticketUrl }: EmailProps) => ({
   html: await render(<Email ticketUrl={ticketUrl} />),
   text: await render(<Email ticketUrl={ticketUrl} />, { plainText: true }),
 });
 
 export default Email;
-export { renderEmailEvent_9_2025_11_28 };
+export { renderEmailEvent_10_2026_01_30 };
