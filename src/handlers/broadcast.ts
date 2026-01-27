@@ -1,11 +1,7 @@
 import { Hono } from "hono";
 import { Resend } from "resend";
 import z from "zod";
-import {
-  instrumentD1WithSentry,
-  captureException,
-  captureMessage,
-} from "@sentry/cloudflare";
+import { instrumentD1WithSentry, captureException } from "@sentry/cloudflare";
 import {
   renderEmailNewsletter_2026_01_27,
   renderEmailEvent_10_2026_01_28,
@@ -105,12 +101,6 @@ app.post("/newsletter", async (c) => {
   const body = BroadcastNewsletterBodySchema.safeParse(await c.req.json());
 
   if (!body.success) {
-    captureMessage(ERROR_MESSAGE_BAD_REQUEST, {
-      level: "error",
-      extra: {
-        body: await c.req.text(),
-      },
-    });
     return c.json(
       {
         status: "error",
@@ -126,12 +116,6 @@ app.post("/newsletter", async (c) => {
   } = body.data;
 
   if (!Object.keys(TEMPLATE_MAPPER_NEWSLETTER).includes(bodyTemplate)) {
-    captureMessage(ERROR_MESSAGE_BAD_REQUEST, {
-      level: "error",
-      extra: {
-        template: bodyTemplate,
-      },
-    });
     return c.json(
       {
         status: "error",
@@ -214,12 +198,6 @@ app.post("/event", async (c) => {
   const body = BroadcastEventBodySchema.safeParse(await c.req.json());
 
   if (!body.success) {
-    captureMessage(ERROR_MESSAGE_BAD_REQUEST, {
-      level: "error",
-      extra: {
-        body: await c.req.text(),
-      },
-    });
     return c.json(
       {
         status: "error",
@@ -232,12 +210,6 @@ app.post("/event", async (c) => {
   const { template: bodyTemplate, eventId: bodyEventId } = body.data;
 
   if (!Object.keys(TEMPLATE_MAPPER_EVENT).includes(bodyTemplate)) {
-    captureMessage(ERROR_MESSAGE_BAD_REQUEST, {
-      level: "error",
-      extra: {
-        template: bodyTemplate,
-      },
-    });
     return c.json(
       {
         status: "error",

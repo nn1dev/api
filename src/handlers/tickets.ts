@@ -1,11 +1,7 @@
 import { Hono } from "hono";
 import { Resend } from "resend";
 import z from "zod";
-import {
-  captureException,
-  captureMessage,
-  instrumentD1WithSentry,
-} from "@sentry/cloudflare";
+import { captureException, instrumentD1WithSentry } from "@sentry/cloudflare";
 import { renderEmailSignupSuccess } from "../../emails/signup-success";
 import { renderEmailAdminSignupSuccess } from "../../emails/admin-signup-success";
 import { renderEmailSignupConfirm } from "../../emails/signup-confirm";
@@ -75,13 +71,6 @@ app.get("/:eventId/:ticketId", async (c) => {
     .first<Ticket>();
 
   if (!ticket) {
-    captureMessage(ERROR_MESSAGE_BAD_REQUEST, {
-      level: "error",
-      extra: {
-        eventId,
-        ticketId,
-      },
-    });
     return c.json(
       {
         status: "error",
@@ -117,12 +106,6 @@ app.post("/", async (c) => {
   const body = TicketsPostBodySchema.safeParse(await c.req.json());
 
   if (!body.success) {
-    captureMessage(ERROR_MESSAGE_BAD_REQUEST, {
-      level: "error",
-      extra: {
-        body: await c.req.text(),
-      },
-    });
     return c.json(
       {
         status: "error",
@@ -373,12 +356,6 @@ app.put("/:eventId/:ticketId", async (c) => {
   const body = TicketsPutBodySchema.safeParse(await c.req.json());
 
   if (!body.success) {
-    captureMessage(ERROR_MESSAGE_BAD_REQUEST, {
-      level: "error",
-      extra: {
-        body: await c.req.text(),
-      },
-    });
     return c.json(
       {
         status: "error",
@@ -403,14 +380,6 @@ app.put("/:eventId/:ticketId", async (c) => {
     .first<Ticket>();
 
   if (!ticket || ticket.confirmation_token !== confirmationToken) {
-    captureMessage(ERROR_MESSAGE_BAD_REQUEST, {
-      level: "error",
-      extra: {
-        eventId,
-        ticketId,
-        confirmationToken,
-      },
-    });
     return c.json(
       {
         status: "error",
@@ -553,13 +522,6 @@ app.delete("/:eventId/:ticketId", async (c) => {
   ]);
 
   if (!ticketResult.results.length) {
-    captureMessage(ERROR_MESSAGE_BAD_REQUEST, {
-      level: "error",
-      extra: {
-        eventId,
-        ticketId,
-      },
-    });
     return c.json(
       {
         status: "error",
