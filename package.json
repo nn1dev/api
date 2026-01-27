@@ -37,7 +37,7 @@
   "dependencies": {
     "@react-email/components": "^1.0.6",
     "@react-email/render": "^2.0.4",
-    "@sentry/cloudflare": "^10.36.0",
+    "@sentry/cloudflare": "^10.37.0",
     "hono": "^4.11.7",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

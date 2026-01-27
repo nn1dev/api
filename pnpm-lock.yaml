@@ -15,8 +15,8 @@ importers:
         specifier: ^2.0.4
         version: 2.0.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@sentry/cloudflare':
-        specifier: ^10.36.0
-        version: 10.36.0
+        specifier: ^10.37.0
+        version: 10.37.0
       hono:
         specifier: ^4.11.7
         version: 4.11.7
@@ -867,8 +867,8 @@ packages:
   '@selderee/plugin-htmlparser2@0.11.0':
     resolution: {integrity: sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ==}
 
-  '@sentry/cloudflare@10.36.0':
-    resolution: {integrity: sha512-OKEsiLFc1HmoLDRgOVNw8DkaAd45gRcB0wW9jL3q8Z2LQUrKtj+1IAsPyuh684R+NhgGFXgsBWUYZ/6raGg7BA==}
+  '@sentry/cloudflare@10.37.0':
+    resolution: {integrity: sha512-js7HYsTGsYK/+uJyLc3yMruQ1tiprMXBQGjUs/m/a4H5V68GqQcus/XbQF0YJS/RqeFuAHAoVSS5D49AUGT12g==}
     engines: {node: '>=18'}
     peerDependencies:
       '@cloudflare/workers-types': ^4.x
@@ -876,8 +876,8 @@ packages:
       '@cloudflare/workers-types':
         optional: true
 
-  '@sentry/core@10.36.0':
-    resolution: {integrity: sha512-EYJjZvofI+D93eUsPLDIUV0zQocYqiBRyXS6CCV6dHz64P/Hob5NJQOwPa8/v6nD+UvJXvwsFfvXOHhYZhZJOQ==}
+  '@sentry/core@10.37.0':
+    resolution: {integrity: sha512-hkRz7S4gkKLgPf+p3XgVjVm7tAfvcEPZxeACCC6jmoeKhGkzN44nXwLiqqshJ25RMcSrhfFvJa/FlBg6zupz7g==}
     engines: {node: '>=18'}
 
   '@sindresorhus/is@7.2.0':
@@ -2154,12 +2154,12 @@ snapshots:
       domhandler: 5.0.3
       selderee: 0.11.0
 
-  '@sentry/cloudflare@10.36.0':
+  '@sentry/cloudflare@10.37.0':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@sentry/core': 10.36.0
+      '@sentry/core': 10.37.0
 
-  '@sentry/core@10.36.0': {}
+  '@sentry/core@10.37.0': {}
 
   '@sindresorhus/is@7.2.0': {}
 
