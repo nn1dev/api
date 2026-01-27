@@ -18,10 +18,10 @@
   },
   "devDependencies": {
     "@react-email/preview-server": "5.2.5",
-    "@types/react": "^19.2.10",
+    "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "typescript": "5.9.3",
-    "wrangler": "4.61.0"
+    "wrangler": "4.60.0"
   },
   "scripts": {
     "gen": "wrangler types",
@@ -37,12 +37,12 @@
   "dependencies": {
     "@react-email/components": "^1.0.6",
     "@react-email/render": "^2.0.4",
-    "@sentry/cloudflare": "^10.37.0",
-    "hono": "^4.11.7",
+    "@sentry/cloudflare": "^10.36.0",
+    "hono": "^4.11.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-email": "^5.2.5",
-    "resend": "^6.9.1",
+    "resend": "^6.8.0",
     "zod": "^4.3.6"
   }
 }
