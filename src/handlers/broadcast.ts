@@ -32,7 +32,7 @@ const TEMPLATE_MAPPER_NEWSLETTER: Record<
   //   template: renderEmailNewsletterTest,
   //   subject: "✨ NN1 Dev Club #Test Newsletter",
   // },
-  "2026-01-14": {
+  "2026-01-27": {
     template: renderEmailNewsletter_2026_01_27,
     subject: "✨ NN1 Dev Club #10 is on Thursday!",
   },
