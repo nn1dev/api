@@ -13,6 +13,6 @@
   "observability": {
     "enabled": true
   },
-  "compatibility_flags": ["nodejs_als", "nodejs_compat"],
+  "compatibility_flags": ["nodejs_als"],
   "upload_source_maps": true
 }
