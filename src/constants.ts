@@ -1,4 +1,4 @@
-const EMAIL_FROM = "NN1 Dev Club <club@nn1.dev>";
+const EMAIL_FROM = "NN1 Dev Club <club@mail.nn1.dev>";
 
 const ERROR_MESSAGE_NOT_FOUND = "The requested resource was not found.";
 const ERROR_MESSAGE_INTERNAL_SERVER = "An internal server error occurred.";
