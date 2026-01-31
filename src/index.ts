@@ -15,6 +15,14 @@ const app = new Hono<{ Bindings: Cloudflare.Env }>();
 app.use(logger());
 app.use(sentryTracing);
 
+app.use("*", async (c, next) => {
+  console.log({ headers: c.req.header() });
+  console.log({ method: c.req.method });
+  console.log({ body: await c.req.json() });
+
+  await next();
+});
+
 // 404 & 500
 app.notFound(handlerErrorNotFound);
 app.onError(handlerErrorServer);
@@ -41,5 +49,6 @@ export default withSentry((env: Cloudflare.Env) => {
     environment: env.URL_CLIENT.includes("localhost")
       ? "development"
       : "production",
+    debug: true,
   };
 }, app);
