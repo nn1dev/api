@@ -16,9 +16,12 @@ app.use(logger());
 app.use(sentryTracing);
 
 app.use("*", async (c, next) => {
+  const body = await c.req.json();
   console.log({ headers: c.req.header() });
   console.log({ method: c.req.method });
-  console.log({ body: await c.req.json() });
+  if (typeof body === "string") {
+    console.log({ body: JSON.stringify(body) });
+  }
 
   await next();
 });
