@@ -12,30 +12,27 @@ const sentryTracing = async (
   const sentryTrace = c.req.header("sentry-trace");
   const baggage = c.req.header("baggage");
 
-  return await continueTrace(
-    { sentryTrace, baggage },
-    async () => {
-      return await startSpan(
-        {
-          name: `${method} ${path}`,
-          op: "http.server",
-          attributes: {
-            "http.method": method,
-            "http.route": path,
-            "http.url": c.req.url,
-          },
+  return await continueTrace({ sentryTrace, baggage }, async () => {
+    return await startSpan(
+      {
+        name: `${method} ${path}`,
+        op: "http.server",
+        attributes: {
+          "http.method": method,
+          "http.route": path,
+          "http.url": c.req.url,
         },
-        async (span) => {
-          await next();
+      },
+      async (span) => {
+        await next();
 
-          // Add response status to span
-          span?.setAttribute("http.status_code", c.res.status);
+        // Add response status to span
+        span?.setAttribute("http.status_code", c.res.status);
 
-          return c.res;
-        },
-      );
-    },
-  );
+        return c.res;
+      },
+    );
+  });
 };
 
 export default sentryTracing;

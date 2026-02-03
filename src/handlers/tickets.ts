@@ -30,12 +30,6 @@ app.use("*", async (c, next) => {
   await next();
 });
 
-app.use("*", async (c, next) => {
-  console.log({ headersTicketsRoute: c.req.header() });
-
-  await next();
-});
-
 app.get("/", async (c) => {
   const db = c.get("db");
 
