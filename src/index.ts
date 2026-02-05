@@ -14,7 +14,10 @@ const app = new Hono<{ Bindings: Cloudflare.Env }>();
 app.use(logger());
 
 app.use("*", async (c, next) => {
-  console.log({ h: c.req.header() });
+  console.log({
+    headerBaggage: c.req.header("baggage"),
+    headerSentryTrace: c.req.header("sentry-trace"),
+  });
   await next();
 });
 
