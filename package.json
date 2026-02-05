@@ -17,11 +17,11 @@
     "publish": true
   },
   "devDependencies": {
-    "@react-email/preview-server": "5.2.5",
-    "@types/react": "^19.2.10",
+    "@react-email/preview-server": "5.2.7",
+    "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
     "typescript": "5.9.3",
-    "wrangler": "4.62.0"
+    "wrangler": "4.63.0"
   },
   "scripts": {
     "gen": "wrangler types",
@@ -35,13 +35,13 @@
     "emails:export": "email export"
   },
   "dependencies": {
-    "@react-email/components": "^1.0.6",
+    "@react-email/components": "^1.0.7",
     "@react-email/render": "^2.0.4",
     "@sentry/cloudflare": "^10.38.0",
     "hono": "^4.11.7",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-email": "^5.2.5",
+    "react-email": "^5.2.7",
     "resend": "6.9.1",
     "zod": "^4.3.6"
   }
