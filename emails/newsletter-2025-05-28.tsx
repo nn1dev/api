@@ -53,7 +53,7 @@ export const Email = ({ unsubscribeUrl }: EmailProps) => (
 );
 
 Email.PreviewProps = {
-  unsubscribeUrl: "#",
+  unsubscribeUrl: "https://nn1.dev",
 } as EmailProps;
 
 const renderEmailNewsletter_2025_05_28 = async (props: EmailProps) => ({

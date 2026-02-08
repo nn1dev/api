@@ -13,14 +13,26 @@ interface EmailProps {
 export const Email = ({ unsubscribeUrl }: EmailProps) => (
   <Layout>
     <Text>
-      Our meetup is coming to your town this Thursday at 6pm at Vulcan Works. You can expect six lightning talks by our community members.</Text>
-
-    <Text>
-      Paul Maddern is going to talk about Z80 assembly and explain the structure of an actual retro game. Richard is going to share his experience and provide some insights after working in the industry for over two decades. Dennis K Bijo is going to go through cybersecurity concepts. Robert Jamborski made a super cool Spotify utility app that he will share with others. Gabriel is going to explain how to make your home networking more secure and private. Nabbil Abbas wants to share his vision of more decentralised networks than the ones we tend to use. Plenty of great stuff!
+      Our meetup is coming to your town this Thursday at 6pm at Vulcan Works.
+      You can expect six lightning talks by our community members.
     </Text>
 
     <Text>
-      Grab your ticket if you haven't already. Pizza, some snacks, and drinks on us. Everything is, as always, free, and we cannot wait to see you all. This one is going to be a crowded one! 🫶
+      Paul Maddern is going to talk about Z80 assembly and explain the structure
+      of an actual retro game. Richard is going to share his experience and
+      provide some insights after working in the industry for over two decades.
+      Dennis K Bijo is going to go through cybersecurity concepts. Robert
+      Jamborski made a super cool Spotify utility app that he will share with
+      others. Gabriel is going to explain how to make your home networking more
+      secure and private. Nabbil Abbas wants to share his vision of more
+      decentralised networks than the ones we tend to use. Plenty of great
+      stuff!
+    </Text>
+
+    <Text>
+      Grab your ticket if you haven't already. Pizza, some snacks, and drinks on
+      us. Everything is, as always, free, and we cannot wait to see you all.
+      This one is going to be a crowded one! 🫶
     </Text>
 
     <Text>
@@ -48,7 +60,7 @@ export const Email = ({ unsubscribeUrl }: EmailProps) => (
 );
 
 Email.PreviewProps = {
-  unsubscribeUrl: "#",
+  unsubscribeUrl: "https://nn1.dev",
 } as EmailProps;
 
 const renderEmailNewsletter_2025_09_23 = async (props: EmailProps) => ({
