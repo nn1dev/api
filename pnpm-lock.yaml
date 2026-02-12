@@ -30,7 +30,7 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       resend:
-        specifier: 6.9.2
+        specifier: ^6.9.2
         version: 6.9.2(@react-email/render@2.0.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
       zod:
         specifier: ^4.3.6
