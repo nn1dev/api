@@ -14,5 +14,8 @@
     "enabled": true
   },
   "compatibility_flags": ["nodejs_als"],
-  "upload_source_maps": true
+  "upload_source_maps": true,
+  "triggers": {
+    "crons": ["0 0 * * *"]
+  }
 }

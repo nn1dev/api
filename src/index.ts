@@ -7,6 +7,7 @@ import status from "./handlers/status";
 import subscribers from "./handlers/subscribers";
 import tickets from "./handlers/tickets";
 import broadcast from "./handlers/broadcast";
+import scheduled from "./handlers/scheduled";
 
 const app = new Hono<{ Bindings: Cloudflare.Env }>();
 
@@ -31,7 +32,7 @@ app.route("/subscribers", subscribers);
 app.route("/tickets", tickets);
 app.route("/broadcast", broadcast);
 
-export default withSentry((env: Cloudflare.Env) => {
+const { fetch } = withSentry((env: Cloudflare.Env) => {
   return {
     dsn: "https://e6e2b273e018ce8f05569c395cf9b7a0@o4507649139146752.ingest.de.sentry.io/4510492115796048",
     release: env.SENTRY_RELEASE,
@@ -49,3 +50,8 @@ export default withSentry((env: Cloudflare.Env) => {
       : "production",
   };
 }, app);
+
+export default {
+  fetch,
+  scheduled,
+};
