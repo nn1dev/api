@@ -14,14 +14,6 @@ const app = new Hono<{ Bindings: Cloudflare.Env }>();
 // middlewares
 app.use(logger());
 
-app.use("*", async (c, next) => {
-  console.log({
-    headerBaggage: c.req.header("baggage"),
-    headerSentryTrace: c.req.header("sentry-trace"),
-  });
-  await next();
-});
-
 // 404 & 500
 app.notFound(handlerErrorNotFound);
 app.onError(handlerErrorServer);
