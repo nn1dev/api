@@ -21,7 +21,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "typescript": "5.9.3",
-    "wrangler": "4.69.0"
+    "wrangler": "4.71.0"
   },
   "scripts": {
     "gen": "wrangler types",
@@ -37,8 +37,8 @@
   "dependencies": {
     "@react-email/components": "^1.0.8",
     "@react-email/render": "^2.0.4",
-    "@sentry/cloudflare": "^10.41.0",
-    "hono": "^4.12.3",
+    "@sentry/cloudflare": "^10.42.0",
+    "hono": "^4.12.5",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-email": "^5.2.9",
