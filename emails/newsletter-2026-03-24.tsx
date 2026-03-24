@@ -14,11 +14,11 @@ export const Email = ({ unsubscribeUrl }: EmailProps) => (
   <Layout>
     <Text>
       A quick reminder about the upcoming meetup with{" "}
-      <strong>Oliver Medhurst</strong> and <strong>Rob Hough</strong>. It is
-      happening in two days and we still have a few slots left! In addition to
-      top speakers, pizza, beers, and some other snacks, we have a little
-      something for every attendee of this meetup. We are looking forward to
-      seeing you!
+      <strong>Oliver Medhurst</strong> and <strong>Rob Hough</strong>. It's
+      happening in two days and we still have a few spots left! In addition to
+      top speakers, free pizza and beers, we also have a little something
+      special for the first 50 attendees. We're looking forward to seeing you
+      there!
     </Text>
     <Text>
       🗓️ Thursday, 26/03/2026, 18:00
