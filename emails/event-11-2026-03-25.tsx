@@ -17,8 +17,8 @@ export const Email = ({ ticketUrl }: EmailProps) => (
   <Layout>
     <Text>
       <strong>NN1 Dev Club #11</strong> is tomorrow and we are looking forward
-      to seeing you. Just a quick reminder with all the details and the link to
-      your ticket.
+      to seeing you. Just a quick reminder with all the details, a link to your
+      ticket and a schedule.
     </Text>
     <Text>
       🗓️ Thursday, 26/03/2026, 18:00
