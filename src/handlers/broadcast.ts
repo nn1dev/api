@@ -5,7 +5,7 @@ import { instrumentD1WithSentry, captureException } from "@sentry/cloudflare";
 import {
   renderEmailNewsletter_2026_03_24,
   renderEmailEvent_11_2026_03_25,
-  renderEmailEvent_10_2026_03_27,
+  // renderEmailEvent_10_2026_03_27,
 } from "../../emails";
 import { chunkArray } from "../utils";
 import auth from "../middlewares/auth";
