@@ -3,14 +3,14 @@ import { Resend } from "resend";
 import z from "zod";
 import { instrumentD1WithSentry, captureException } from "@sentry/cloudflare";
 import {
-  renderEmailNewsletter_2026_03_24,
-  renderEmailEvent_11_2026_03_25,
+  renderEmailNewsletter_2026_04_01,
+  // renderEmailNewsletter_2026_03_24,
+  // renderEmailEvent_11_2026_03_25,
   // renderEmailEvent_10_2026_03_27,
 } from "../../emails";
 import { chunkArray } from "../utils";
 import auth from "../middlewares/auth";
 import { EMAIL_FROM, ERROR_MESSAGE_BAD_REQUEST } from "../constants";
-import { renderEmailEvent_11_2026_03_27 } from "../../emails/event-11-2026-03-27";
 
 // https://resend.mintlify.dev/docs/api-reference/emails/send-batch-emails
 const RESEND_MAX_BATCH_CHUNK = 100;
@@ -33,9 +33,13 @@ const TEMPLATE_MAPPER_NEWSLETTER: Record<
   //   template: renderEmailNewsletter_2026_01_27,
   //   subject: "✨ NN1 Dev Club #10 is on Thursday!",
   // },
-  "2026-03-24": {
-    template: renderEmailNewsletter_2026_03_24,
-    subject: "✨ NN1 Dev Club #11 is on Thursday!",
+  // "2026-03-24": {
+  //   template: renderEmailNewsletter_2026_03_24,
+  //   subject: "✨ NN1 Dev Club #11 is on Thursday!",
+  // },
+  "2026-04-01": {
+    template: renderEmailNewsletter_2026_04_01,
+    subject: "✨ NN1 Dev Club #12 is on 28th May!",
   },
 };
 
@@ -53,14 +57,14 @@ const TEMPLATE_MAPPER_EVENT: Record<
   //   template: renderEmailEventTest,
   //   subject: "✨ NN1 Dev Club #Test Event",
   // },
-  "11-2026-03-25": {
-    template: renderEmailEvent_11_2026_03_25,
-    subject: "✨ NN1 Dev Club #11 - See you tomorrow!",
-  },
-  "11-2026-03-27": {
-    template: renderEmailEvent_11_2026_03_27,
-    subject: "✨ NN1 Dev Club #11 - Thank you for attending!",
-  },
+  // "11-2026-03-25": {
+  //   template: renderEmailEvent_11_2026_03_25,
+  //   subject: "✨ NN1 Dev Club #11 - See you tomorrow!",
+  // },
+  // "11-2026-03-27": {
+  //   template: renderEmailEvent_11_2026_03_27,
+  //   subject: "✨ NN1 Dev Club #11 - Thank you for attending!",
+  // },
 };
 
 async function createEmailPayload({
