@@ -1,5 +1,4 @@
-import React from "react";
-import { Hr } from "@react-email/components";
+import { Hr } from "react-email";
 
 function NN1Hr() {
   return (

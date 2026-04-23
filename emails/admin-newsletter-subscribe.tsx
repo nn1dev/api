@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render } from "@react-email/render";
+import { render } from "react-email";
 import Layout from "../components/Layout.tsx";
 import Text from "../components/Text.tsx";
 import Hr from "../components/Hr.tsx";

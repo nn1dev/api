@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@react-email/components";
+import { Button } from "react-email";
 
 function NN1Button({
   children,

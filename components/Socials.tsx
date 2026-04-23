@@ -1,8 +1,7 @@
-import React from "react";
-import { Column } from "@react-email/components";
-import { Img } from "@react-email/components";
-import { Link } from "@react-email/components";
-import { Row } from "@react-email/components";
+import { Column } from "react-email";
+import { Img } from "react-email";
+import { Link } from "react-email";
+import { Row } from "react-email";
 
 function Socials() {
   return (

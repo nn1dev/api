@@ -1,4 +1,4 @@
-import { render } from "@react-email/render";
+import { render } from "react-email";
 import Button from "../components/Button";
 import Hr from "../components/Hr";
 import Link from "../components/Link";

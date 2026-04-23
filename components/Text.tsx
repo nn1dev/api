@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "@react-email/components";
+import { Text } from "react-email";
 
 function NN1Text({ children }: { children: React.ReactNode }) {
   return (

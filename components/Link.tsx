@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "@react-email/components";
+import { Link } from "react-email";
 
 function NN1Link({
   children,

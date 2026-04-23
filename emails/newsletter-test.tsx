@@ -1,4 +1,4 @@
-import { render } from "@react-email/render";
+import { render } from "react-email";
 import Hr from "../components/Hr.tsx";
 import Link from "../components/Link.tsx";
 import Text from "../components/Text.tsx";

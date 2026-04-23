@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Body } from "@react-email/components";
-import { Container } from "@react-email/components";
-import { Head } from "@react-email/components";
-import { Html } from "@react-email/components";
-import { Img } from "@react-email/components";
+import { Body } from "react-email";
+import { Container } from "react-email";
+import { Head } from "react-email";
+import { Html } from "react-email";
+import { Img } from "react-email";
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
   <Html>
