@@ -3,7 +3,8 @@ import { Resend } from "resend";
 import z from "zod";
 import { instrumentD1WithSentry, captureException } from "@sentry/cloudflare";
 import {
-  renderEmailNewsletter_2026_04_01,
+  // renderEmailNewsletter_2026_04_01,
+  renderEmailNewsletter_2026_04_30,
   // renderEmailNewsletter_2026_03_24,
   // renderEmailEvent_11_2026_03_25,
   // renderEmailEvent_10_2026_03_27,
@@ -37,9 +38,9 @@ const TEMPLATE_MAPPER_NEWSLETTER: Record<
   //   template: renderEmailNewsletter_2026_03_24,
   //   subject: "✨ NN1 Dev Club #11 is on Thursday!",
   // },
-  "2026-04-01": {
-    template: renderEmailNewsletter_2026_04_01,
-    subject: "✨ NN1 Dev Club #12 is on 28th May!",
+  "2026-04-30": {
+    template: renderEmailNewsletter_2026_04_30,
+    subject: "✨ Merged Futures 8",
   },
 };
 
