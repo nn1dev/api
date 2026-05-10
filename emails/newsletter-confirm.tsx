@@ -1,8 +1,8 @@
 import { render } from "react-email";
-import Layout from "../components/Layout.tsx";
-import Text from "../components/Text.tsx";
-import Button from "../components/Button.tsx";
-import Socials from "../components/Socials.tsx";
+import Layout from "../components/Layout";
+import Text from "../components/Text";
+import Button from "../components/Button";
+import Socials from "../components/Socials";
 
 interface EmailSubscriberConfirmProps {
   url: string;

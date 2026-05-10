@@ -1,8 +1,7 @@
-import * as React from "react";
 import { render } from "react-email";
-import Layout from "../components/Layout.tsx";
-import Text from "../components/Text.tsx";
-import Hr from "../components/Hr.tsx";
+import Layout from "../components/Layout";
+import Text from "../components/Text";
+import Hr from "../components/Hr";
 
 interface EmailAdminFeedbackProps {
   name: string;

@@ -1,10 +1,9 @@
-import * as React from "react";
 import { render } from "react-email";
-import Layout from "../components/Layout.tsx";
-import Text from "../components/Text.tsx";
-import Link from "../components/Link.tsx";
-import Button from "../components/Button.tsx";
-import Socials from "../components/Socials.tsx";
+import Layout from "../components/Layout";
+import Text from "../components/Text";
+import Link from "../components/Link";
+import Button from "../components/Button";
+import Socials from "../components/Socials";
 
 interface EmailSignupSuccessProps {
   ticketUrl: string;

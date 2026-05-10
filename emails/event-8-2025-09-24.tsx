@@ -1,12 +1,11 @@
-import * as React from "react";
 import { render } from "react-email";
-import Layout from "../components/Layout.tsx";
-import Text from "../components/Text.tsx";
-import Button from "../components/Button.tsx";
-import Link from "../components/Link.tsx";
-import Heading from "../components/Heading.tsx";
-import Hr from "../components/Hr.tsx";
-import Socials from "../components/Socials.tsx";
+import Layout from "../components/Layout";
+import Text from "../components/Text";
+import Button from "../components/Button";
+import Link from "../components/Link";
+import Heading from "../components/Heading";
+import Hr from "../components/Hr";
+import Socials from "../components/Socials";
 
 interface EmailProps {
   ticketUrl: string;

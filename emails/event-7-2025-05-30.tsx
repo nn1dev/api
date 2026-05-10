@@ -1,8 +1,8 @@
 import { render } from "react-email";
-import Layout from "../components/Layout.tsx";
-import Text from "../components/Text.tsx";
-import Link from "../components/Link.tsx";
-import Socials from "../components/Socials.tsx";
+import Layout from "../components/Layout";
+import Text from "../components/Text";
+import Link from "../components/Link";
+import Socials from "../components/Socials";
 
 interface EmailProps {
   ticketUrl: string;

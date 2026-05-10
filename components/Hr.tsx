@@ -4,7 +4,7 @@ function NN1Hr() {
   return (
     <Hr
       style={{
-        borderColor: "#29282e",
+        borderTop: "1px solid #29282e",
         margin: "0 0 26px",
       }}
     />

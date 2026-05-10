@@ -1,10 +1,10 @@
 import { render } from "react-email";
-import Hr from "../components/Hr.tsx";
-import Link from "../components/Link.tsx";
-import Text from "../components/Text.tsx";
-import Layout from "../components/Layout.tsx";
-import Socials from "../components/Socials.tsx";
-import Heading from "../components/Heading.tsx";
+import Hr from "../components/Hr";
+import Link from "../components/Link";
+import Text from "../components/Text";
+import Layout from "../components/Layout";
+import Socials from "../components/Socials";
+import Heading from "../components/Heading";
 
 interface EmailProps {
   unsubscribeUrl: string;

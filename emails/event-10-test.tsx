@@ -1,8 +1,8 @@
 import { render } from "react-email";
-import Layout from "../components/Layout.tsx";
-import Text from "../components/Text.tsx";
-import Socials from "../components/Socials.tsx";
-import Heading from "../components/Heading.tsx";
+import Layout from "../components/Layout";
+import Text from "../components/Text";
+import Socials from "../components/Socials";
+import Heading from "../components/Heading";
 import Button from "../components/Button.js";
 
 interface EmailProps {
