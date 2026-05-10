@@ -9,20 +9,17 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 11
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
-          cache: pnpm
+          node-version: 26
+          cache: npm
       - name: Install dependencies
-        run: pnpm install
+        run: npm ci
       - name: Build & Deploy Worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: pnpm exec wrangler deploy --outdir dist --upload-source-maps --var SENTRY_RELEASE:${{ github.sha }}
+        run: npx wrangler deploy --outdir dist --upload-source-maps --var SENTRY_RELEASE:${{ github.sha }}
       - name: Install Sentry CLI
         run: curl -sL https://sentry.io/get-cli/ | sh
       - name: Upload sourcemaps to Sentry
