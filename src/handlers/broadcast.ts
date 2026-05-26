@@ -8,6 +8,7 @@ import {
   renderEmailNewsletter_2026_05_26,
   // renderEmailNewsletter_2026_03_24,
   // renderEmailEvent_11_2026_03_25,
+  renderEmailEvent_12_2026_05_27,
   // renderEmailEvent_10_2026_03_27,
 } from "../../emails";
 import { chunkArray } from "../utils";
@@ -67,6 +68,10 @@ const TEMPLATE_MAPPER_EVENT: Record<
   //   template: renderEmailEvent_11_2026_03_27,
   //   subject: "✨ NN1 Dev Club #11 - Thank you for attending!",
   // },
+  "12-2026-05-27": {
+    template: renderEmailEvent_12_2026_05_27,
+    subject: "✨ NN1 Dev Club #12 - See you tomorrow!",
+  },
 };
 
 async function createEmailPayload({
