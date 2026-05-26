@@ -4,11 +4,11 @@
   "private": true,
   "devDependencies": {
     "@react-email/preview-server": "5.2.10",
-    "@react-email/ui": "6.1.4",
-    "@types/react": "^19.2.14",
+    "@react-email/ui": "6.3.3",
+    "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "typescript": "6.0.3",
-    "wrangler": "4.90.1"
+    "wrangler": "4.94.0"
   },
   "scripts": {
     "gen": "wrangler types",
@@ -25,11 +25,11 @@
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.0.8",
     "@sentry/cloudflare": "^10.53.1",
-    "hono": "^4.12.18",
+    "hono": "^4.12.23",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-email": "^6.1.4",
-    "resend": "^6.12.3",
+    "react-email": "^6.3.3",
+    "resend": "^6.12.4",
     "zod": "^4.4.3"
   }
 }
