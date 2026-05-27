@@ -213,8 +213,6 @@ app.post("/event", async (c) => {
   const db = c.get("db");
   const body = BroadcastEventBodySchema.safeParse(await c.req.json());
 
-  console.log({ body });
-
   if (!body.success) {
     return c.json(
       {
@@ -228,7 +226,6 @@ app.post("/event", async (c) => {
   const { template: bodyTemplate, eventId: bodyEventId } = body.data;
 
   if (!Object.keys(TEMPLATE_MAPPER_EVENT).includes(bodyTemplate)) {
-    console.log("missing template");
     return c.json(
       {
         status: "error",
