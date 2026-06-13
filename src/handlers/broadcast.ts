@@ -5,8 +5,9 @@ import { instrumentD1WithSentry, captureException } from "@sentry/cloudflare";
 import {
   // renderEmailNewsletter_2026_04_01,
   // renderEmailNewsletter_2026_04_30,
-  renderEmailNewsletter_2026_05_26,
+  // renderEmailNewsletter_2026_05_26,
   // renderEmailNewsletter_2026_03_24,
+  renderEmailNewsletter_2026_06_19,
   // renderEmailEvent_11_2026_03_25,
   renderEmailEvent_12_2026_05_27,
   // renderEmailEvent_10_2026_03_27,
@@ -40,9 +41,13 @@ const TEMPLATE_MAPPER_NEWSLETTER: Record<
   //   template: renderEmailNewsletter_2026_03_24,
   //   subject: "✨ NN1 Dev Club #11 is on Thursday!",
   // },
-  "2026-05-26": {
-    template: renderEmailNewsletter_2026_05_26,
-    subject: "✨ NN1 Dev Club #12 is in two days!",
+  // "2026-05-26": {
+  //   template: renderEmailNewsletter_2026_05_26,
+  //   subject: "✨ NN1 Dev Club #12 is in two days!",
+  // },
+  "2026-06-19": {
+    template: renderEmailNewsletter_2026_06_19,
+    subject: "✨ Merged Futures 8",
   },
 };
 
