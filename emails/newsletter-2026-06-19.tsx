@@ -56,7 +56,7 @@ export const Email = ({ unsubscribeUrl }: EmailProps) => (
           timeEnd: "14:15",
           title: "Full Stack Speedrun” by Roger Hughes (Sign In Solutions)",
           descriptoin:
-            "Roger Hughes will talk about his side-project workflow, building a PWA rapidly from scratch using the free tier AI/backend/frontend. Other than a GitHub and OpenCode account, not much more is needed to follow along and leave the session with a working app.",
+            "Building a full-stack app with AI requires more than just prompts, it requires a production-ready workflow. I'll show you how to build a fully functional web app with database integration using 100% free tools and services. Bring (free) GitHub, OpenCode and Supabase logins to follow along.",
         },
         {
           timeStart: "14:30",
