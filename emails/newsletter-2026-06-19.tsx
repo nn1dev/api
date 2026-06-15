@@ -41,7 +41,7 @@ export const Email = ({ unsubscribeUrl }: EmailProps) => (
           title:
             '"From Task to Invention: A Hands-on Sprint to Find New Value in AI" by Eric Bye (Erictron AI)',
           descriptoin:
-            "Most AI conversations are about efficiency and that's a fine starting point but it's also where most people stop. The more interesting question is what a task enables when you remove the old constraints on scale and scope, because that'show a simple task becomes an asset, something new that didn't exist before you started looking. In this hands-on workshop you'll take an AI use case and work it through a structured exercise that pushes from task all the way to invention. You'll walk away with a map of value you hadn't spotted and a way of thinking you'll keep using long after this.",
+            "Most AI conversations are about efficiency and that's a fine starting point but it's also where most people stop. The more interesting question is what a task enables when you remove the old constraints on scale and scope, because that's how a simple task becomes an asset, something new that didn't exist before you started looking. In this hands-on workshop you'll take an AI use case and work it through a structured exercise that pushes from task all the way to invention. You'll walk away with a map of value you hadn't spotted and a way of thinking you'll keep using long after this.",
         },
         {
           timeStart: "12:00",
@@ -54,7 +54,7 @@ export const Email = ({ unsubscribeUrl }: EmailProps) => (
         {
           timeStart: "13:30",
           timeEnd: "14:15",
-          title: "ull Stack Speedrun” by Roger Hughes (Sign In Solutions)",
+          title: "Full Stack Speedrun” by Roger Hughes (Sign In Solutions)",
           descriptoin:
             "Roger Hughes will talk about his side-project workflow, building a PWA rapidly from scratch using the free tier AI/backend/frontend. Other than a GitHub and OpenCode account, not much more is needed to follow along and leave the session with a working app.",
         },
