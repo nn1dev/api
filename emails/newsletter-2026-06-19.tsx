@@ -14,7 +14,7 @@ interface EmailProps {
 export const Email = ({ unsubscribeUrl }: EmailProps) => (
   <Layout>
     <Text>
-      Join us for the{" "}
+      Join us for{" "}
       <Link href="https://digitalnorthants.com/events2/merged-futures-8">
         Merged Futures 8
       </Link>
@@ -47,7 +47,7 @@ export const Email = ({ unsubscribeUrl }: EmailProps) => (
           timeStart: "12:00",
           timeEnd: "12:45",
           title:
-            "What a Load of Crap: The Complex Tech Behind Collecting Your Bins and Clearing Up Your Mess” by Kevin White (West Northamptonshire Council)",
+            '"What a Load of Crap: The Complex Tech Behind Collecting Your Bins and Clearing Up Your Mess" by Kevin White (West Northamptonshire Council)',
           descriptoin:
             "Collecting bins and clearing up rubbish may seem like the least technical and definitely least glamorous activities a developer could work on. But behind every missed bin, dog poo report, and 'when's my collection?' call sits a stack of AWS services, chatbots, and automations that will hopefully surprise you.",
         },
@@ -71,7 +71,7 @@ export const Email = ({ unsubscribeUrl }: EmailProps) => (
     <Hr />
     <Text>
       And this is only an agenda for our room. There are 4 more to cherry-pick
-      other great talks. Afterwards, stick around for a pizza, drink and good
+      other great talks. Afterwards, stick around for pizza, drinks, and a good
       chat at the Waterside Bar and Restaurant. Register today and see you on
       Friday 26 June 2026.
     </Text>
