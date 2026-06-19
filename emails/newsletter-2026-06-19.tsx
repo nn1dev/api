@@ -54,7 +54,7 @@ export const Email = ({ unsubscribeUrl }: EmailProps) => (
         {
           timeStart: "13:30",
           timeEnd: "14:15",
-          title: "Full Stack Speedrun” by Roger Hughes (Sign In Solutions)",
+          title: '"Full Stack Speedrun" by Roger Hughes (Sign In Solutions)',
           descriptoin:
             "Building a full-stack app with AI requires more than just prompts, it requires a production-ready workflow. I'll show you how to build a fully functional web app with database integration using 100% free tools and services. Bring (free) GitHub, OpenCode and Supabase logins to follow along.",
         },
