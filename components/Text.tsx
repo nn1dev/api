@@ -5,7 +5,7 @@ function NN1Text({ children }: { children: React.ReactNode }) {
   return (
     <Text
       style={{
-        color: "#f8f7ff",
+        color: "#2f2b33",
         margin: "0 0 26px",
         fontSize: "16px",
         lineHeight: "26px",

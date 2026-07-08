@@ -14,7 +14,7 @@ function NN1Text({
     <Section key={index} style={{ marginBottom: "26px" }}>
       <Text
         style={{
-          color: "#ccc",
+          color: "#5b5b5b",
           margin: "0",
           fontSize: "14px",
           lineHeight: "26px",
@@ -24,7 +24,7 @@ function NN1Text({
       </Text>
       <Text
         style={{
-          color: "#f8f7ff",
+          color: "#09080d",
           margin: "0 ",
           fontSize: "16px",
           lineHeight: "26px",
@@ -36,7 +36,7 @@ function NN1Text({
       {item.descriptoin ? (
         <Text
           style={{
-            color: "#f8f7ff",
+            color: "#09080d",
             margin: "0 ",
             fontSize: "16px",
             lineHeight: "26px",

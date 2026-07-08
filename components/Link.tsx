@@ -12,7 +12,7 @@ function NN1Link({
     <Link
       href={href}
       style={{
-        color: "#ddc2a5",
+        color: "#7a4b20",
         textDecoration: "underline",
       }}
     >
