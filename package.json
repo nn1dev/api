@@ -4,11 +4,11 @@
   "private": true,
   "devDependencies": {
     "@react-email/preview-server": "5.2.10",
-    "@react-email/ui": "6.6.5",
+    "@react-email/ui": "6.6.8",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "typescript": "6.0.3",
-    "wrangler": "4.105.0"
+    "typescript": "7.0.2",
+    "wrangler": "4.107.1"
   },
   "scripts": {
     "gen": "wrangler types",
@@ -23,13 +23,19 @@
   },
   "dependencies": {
     "@react-email/components": "^1.0.12",
-    "@react-email/render": "^2.0.9",
-    "@sentry/cloudflare": "^10.62.0",
-    "hono": "^4.12.27",
+    "@react-email/render": "^2.0.10",
+    "@sentry/cloudflare": "^10.64.0",
+    "hono": "^4.12.28",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-email": "^6.6.5",
-    "resend": "^6.16.0",
+    "react-email": "^6.6.8",
+    "resend": "^6.17.2",
     "zod": "^4.4.3"
+  },
+  "allowScripts": {
+    "esbuild": false,
+    "fsevents": false,
+    "sharp": false,
+    "workerd": false
   }
 }
