@@ -7,9 +7,10 @@ import {
   // renderEmailNewsletter_2026_04_30,
   // renderEmailNewsletter_2026_05_26,
   // renderEmailNewsletter_2026_03_24,
-  renderEmailNewsletter_2026_06_19,
+  // renderEmailNewsletter_2026_06_19,
   // renderEmailEvent_11_2026_03_25,
-  renderEmailEvent_12_2026_05_27,
+  // renderEmailEvent_12_2026_05_27,
+  renderEmailNewsletter_2026_07_09,
   // renderEmailEvent_10_2026_03_27,
 } from "../../emails";
 import { chunkArray } from "../utils";
@@ -45,9 +46,13 @@ const TEMPLATE_MAPPER_NEWSLETTER: Record<
   //   template: renderEmailNewsletter_2026_05_26,
   //   subject: "✨ NN1 Dev Club #12 is in two days!",
   // },
-  "2026-06-19": {
-    template: renderEmailNewsletter_2026_06_19,
-    subject: "✨ Merged Futures 8",
+  // "2026-06-19": {
+  //   template: renderEmailNewsletter_2026_06_19,
+  //   subject: "✨ Merged Futures 8",
+  // },
+  "2026-07-09": {
+    template: renderEmailNewsletter_2026_07_09,
+    subject: "✨ NN1 Dev Club #13",
   },
 };
 
@@ -73,10 +78,10 @@ const TEMPLATE_MAPPER_EVENT: Record<
   //   template: renderEmailEvent_11_2026_03_27,
   //   subject: "✨ NN1 Dev Club #11 - Thank you for attending!",
   // },
-  "12-2026-05-27": {
-    template: renderEmailEvent_12_2026_05_27,
-    subject: "✨ NN1 Dev Club #12 - See you tomorrow!",
-  },
+  // "12-2026-05-27": {
+  //   template: renderEmailEvent_12_2026_05_27,
+  //   subject: "✨ NN1 Dev Club #12 - See you tomorrow!",
+  // },
 };
 
 async function createEmailPayload({
