@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { Resend } from "resend";
 import z from "zod";
-import { instrumentD1WithSentry, captureException } from "@sentry/cloudflare";
+import { captureException } from "@sentry/cloudflare";
 import {
   // renderEmailNewsletter_2026_04_01,
   // renderEmailNewsletter_2026_04_30,
@@ -113,7 +113,7 @@ const app = new Hono<{
 }>();
 app.use(auth);
 app.use("*", async (c, next) => {
-  c.set("db", instrumentD1WithSentry(c.env.DB));
+  c.set("db", c.env.DB);
   await next();
 });
 
