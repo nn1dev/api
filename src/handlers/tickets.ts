@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { Resend } from "resend";
 import z from "zod";
-import { captureException, instrumentD1WithSentry } from "@sentry/cloudflare";
+import { captureException } from "@sentry/cloudflare";
 import { renderEmailSignupSuccess } from "../../emails/signup-success";
 import { renderEmailAdminSignupSuccess } from "../../emails/admin-signup-success";
 import { renderEmailSignupConfirm } from "../../emails/signup-confirm";
@@ -26,7 +26,7 @@ const sanitizeTicket = (ticket: Ticket) => {
 
 app.use(auth);
 app.use("*", async (c, next) => {
-  c.set("db", instrumentD1WithSentry(c.env.DB));
+  c.set("db", c.env.DB);
   await next();
 });
 
