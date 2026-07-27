@@ -11,7 +11,7 @@ import {
   // renderEmailEvent_11_2026_03_25,
   // renderEmailEvent_12_2026_05_27,
   // renderEmailNewsletter_2026_07_09,
-  renderEmailNewsletter_2026_07_30,
+  renderEmailNewsletter_2026_07_27,
   // renderEmailEvent_10_2026_03_27,
 } from "../../emails";
 import { chunkArray } from "../utils";
@@ -55,10 +55,10 @@ const TEMPLATE_MAPPER_NEWSLETTER: Record<
   //   template: renderEmailNewsletter_2026_07_09,
   //   subject: "✨ NN1 Dev Club #13",
   // },
-  "2026-07-30": {
-    template: renderEmailNewsletter_2026_07_30,
+  "2026-07-27": {
+    template: renderEmailNewsletter_2026_07_27,
     subject:
-      "Free coworking day at Vulcan Works, and the next one is tomorrow!",
+      "Free coworking day at Vulcan Works, and the next one is on Friday!",
   },
 };
 

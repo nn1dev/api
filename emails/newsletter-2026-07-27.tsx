@@ -12,10 +12,9 @@ interface EmailProps {
 export const Email = ({ unsubscribeUrl }: EmailProps) => (
   <Layout>
     <Text>
-      If you work in tech, chances are you work from home every day and rarely
-      get to hang out with other like-minded geeks. That's why we run a free
-      coworking day on the last Friday of every month, and the next one is
-      tomorrow.
+      If you work in tech, you probably work from home and rarely get to meet
+      other like-minded people. That’s why we host a free coworking day on the
+      last Friday of every month. The next one is on July 31.
     </Text>
 
     <Text>
@@ -26,10 +25,10 @@ export const Email = ({ unsubscribeUrl }: EmailProps) => (
     </Text>
 
     <Text>
-      Join us tomorrow, and on the last Friday of every month, at{" "}
+      Join us on Friday, July 31, at{" "}
       <Link href="https://maps.app.goo.gl/q7RFeDME5cLZWPFA7">Vulcan Works</Link>{" "}
-      in the second (big) coworking room. The lovely folks at reception will
-      point you towards the NN1 Dev Club crowd if you can't find us.
+      in the second large coworking room. The lovely folks at reception will
+      point you towards the NN1 Dev Club crowd if you can’t find us.
     </Text>
 
     <Text>
@@ -58,10 +57,10 @@ Email.PreviewProps = {
   unsubscribeUrl: "https://nn1.dev",
 } as EmailProps;
 
-const renderEmailNewsletter_2026_07_30 = async (props: EmailProps) => ({
+const renderEmailNewsletter_2026_07_27 = async (props: EmailProps) => ({
   html: await render(<Email {...props} />),
   text: await render(<Email {...props} />, { plainText: true }),
 });
 
 export default Email;
-export { renderEmailNewsletter_2026_07_30 };
+export { renderEmailNewsletter_2026_07_27 };

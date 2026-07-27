@@ -9,7 +9,7 @@
 // export { renderEmailNewsletter_2026_05_26 } from "./newsletter-2026-05-26";
 // export { renderEmailNewsletter_2026_06_19 } from "./newsletter-2026-06-19";
 // export { renderEmailNewsletter_2026_07_09 } from "./newsletter-2026-07-09";
-export { renderEmailNewsletter_2026_07_30 } from "./newsletter-2026-07-30";
+export { renderEmailNewsletter_2026_07_27 } from "./newsletter-2026-07-27";
 // export { renderEmailEvent_10_2026_01_28 } from "./event-10-2026-01-28";
 // export { renderEmailEvent_10_2026_01_30 } from "./event-10-2026-01-30";
 // export { renderEmailEvent_11_2026_03_25 } from "./event-11-2026-03-25";
