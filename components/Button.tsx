@@ -12,8 +12,8 @@ function NN1Button({
     <Button
       href={href}
       style={{
-        backgroundColor: "#ddc2a5",
-        color: "#09080d",
+        backgroundColor: "#09080d",
+        color: "#f8f7ff",
         padding: "13px 26px",
         margin: "0 0 26px",
         borderRadius: "4px",

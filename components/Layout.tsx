@@ -7,10 +7,14 @@ import { Img } from "react-email";
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
   <Html>
-    <Head />
+    <Head>
+      <meta name="color-scheme" content="light" />
+      <meta name="supported-color-schemes" content="light" />
+    </Head>
     <Body
       style={{
-        backgroundColor: "#09080d",
+        backgroundColor: "#ffffff",
+        color: "#09080d",
         fontFamily:
           "-apple-system,BlinkMacSystemFont,segoe ui,Helvetica,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol",
         padding: "52px 26px",
@@ -20,6 +24,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
       <Container
         style={{
           maxWidth: "600px",
+          backgroundColor: "#ffffff",
         }}
       >
         <Img
