@@ -11,7 +11,7 @@ import {
   // renderEmailEvent_11_2026_03_25,
   // renderEmailEvent_12_2026_05_27,
   // renderEmailNewsletter_2026_07_09,
-  renderEmailNewsletter_2026_09_09,
+  renderEmailNewsletter_2026_09_21,
   // renderEmailEvent_10_2026_03_27,
 } from "../../emails";
 import { chunkArray } from "../utils";
@@ -60,8 +60,12 @@ const TEMPLATE_MAPPER_NEWSLETTER: Record<
   //   subject:
   //     "Free coworking day at Vulcan Works, and the next one is on Friday!",
   // },
-  "2026-09-09": {
-    template: renderEmailNewsletter_2026_09_09,
+  // "2026-09-09": {
+  //   template: renderEmailNewsletter_2026_09_09,
+  //   subject: "✨ NN1 Dev Club #13 - Ana Rodrigues & Diana Silva",
+  // },
+  "2026-09-21": {
+    template: renderEmailNewsletter_2026_09_21,
     subject: "✨ NN1 Dev Club #13 - Ana Rodrigues & Diana Silva",
   },
 };
