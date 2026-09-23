@@ -17,3 +17,4 @@ export { renderEmailNewsletter_2026_09_21 } from "./newsletter-2026-09-21";
 // export { renderEmailEvent_11_2026_03_25 } from "./event-11-2026-03-25";
 // export { renderEmailEvent_11_2026_03_27 as renderEmailEvent_10_2026_03_27 } from "./event-11-2026-03-27";
 // export { renderEmailEvent_12_2026_05_27 as renderEmailEvent_12_2026_05_27 } from "./event-12-2026-05-27";
+export { renderEmailEvent_13_2026_09_23 } from "./event-13-2026-09-23";
