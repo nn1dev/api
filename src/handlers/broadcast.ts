@@ -14,6 +14,7 @@ import {
   // renderEmailNewsletter_2026_09_21,
   // renderEmailEvent_10_2026_03_27,
   renderEmailEvent_13_2026_09_23,
+  renderEmailNewsletter_2026_10_01,
 } from "../../emails";
 import { chunkArray } from "../utils";
 import auth from "../middlewares/auth";
@@ -69,6 +70,10 @@ const TEMPLATE_MAPPER_NEWSLETTER: Record<
   //   template: renderEmailNewsletter_2026_09_21,
   //   subject: "✨ NN1 Dev Club #13 - Ana Rodrigues & Diana Silva",
   // },
+  "2026-10-01": {
+    template: renderEmailNewsletter_2026_10_01,
+    subject: "✨ NN1 Dev Club #14 - One evening, three talks",
+  },
 };
 
 const TEMPLATE_MAPPER_EVENT: Record<
